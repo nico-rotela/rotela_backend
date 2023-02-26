@@ -1,18 +1,7 @@
-// creo la clase
 class productManager {
-    
-    // constructor(titulo, descripcion, precio, img, id, stock,) {
-    //     this.titulo = titulo;
-    //     this.descripcion = descripcion;
-    //     this.precio = precio;
-    //     this.img = img;
-    //     this.id = id;
-    //     this.stock = stock;
-    // }
 
-    // metodos
-    // agregar un producto
-    addProduct(titulo, descripcion, precio, img, id, stock,){
+    constructor (titulo, descripcion, precio, img, id, stock) {
+       this.producto = []
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -21,34 +10,52 @@ class productManager {
         this.stock = stock;
     }
 
-    // mostrar productos por consola
-   getProducts() {
-    return `estos son los productos: ${[this.titulo, this.descripcion, this.precio, this.img, this.id, this.stock]}`
-   }
-   
-    //filtrar por id
-    getProductsById() {
-        return `este es el producto: ${this.titulo} , su id es: ${this.id}`
-    }
-} 
+   //  metodos
 
+   // agregar un producto
+    addProduct(titulo, descripcion, precio, img, id, stock) {
+       let productoId = this.producto.find(producto => producto.id === id)
+           if (productoId) {
+               console.log("objeto creado")
+           } else {
+               const prodAdd = {titulo, descripcion, precio, img, id, stock}
+               this.producto.push(prodAdd)
+           }
+       }
+
+
+   //  devolver el producto
+    getProduct() {
+       return this.producto
+    }
+
+    getProductById(id) {
+       let productoPorId = this.producto.find(prod => prod.id === id)
+       if(productoPorId) {
+          return productoPorId
+       }else {
+           console.log("el producto no existe")
+       }
+    }
+}
+
+const producto1 = new productManager ("monitor", "monitor Asus 21'", "$50.000", "imagen", 3, 6)
 
 const producto = new productManager()
-const producto1 = new productManager()
-const producto3 = new productManager()
 
-producto.addProduct("monitor", "monitor Asus 21'", "$50.000", "imagen", 3, 6)
-console.log(producto.getProducts())
-console.log(producto.getProductsById())
+console.log("array vacio")
+console.log(producto.getProduct())
 
-producto1.addProduct("mouse", "mouse logitech 10.000 dpi", "$5.000", "imagen", 1, 6)
-console.log(producto1.getProducts())
-console.log(producto1.getProductsById())
+console.log("primer producto agregado")
+producto.addProduct("monitor", "monitor de 21' full hd", "$22144", "imagen", 1, 3)
+console.log(producto.getProduct())
 
-producto3.addProduct("teclado", "teclado logitech... etc", "$ 10.000", "imagen", 2, 3)
-console.log(producto3.getProducts())
-console.log(producto3.getProductsById())
+console.log("segundo producto agregado")
+producto.addProduct("mouse", "mouse logitech 10000 dpi", "$5000", "imagen", 2, 3)
+console.log(producto.getProduct())
 
+console.log("producto filtrado por id")
+producto.getProductById(1)
 
 
 
