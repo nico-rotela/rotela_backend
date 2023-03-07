@@ -1,62 +1,62 @@
 class productManager {
+    static globalId = 0
 
-    constructor (titulo, descripcion, precio, img, id, stock) {
-       this.producto = []
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.img = img;
-        this.id = id;
-        this.stock = stock;
+    constructor() {
+        this.product = []
     }
 
-   //  metodos
+    // metodos
 
-   // agregar un producto
-    addProduct(titulo, descripcion, precio, img, id, stock) {
-       let productoId = this.producto.find(producto => producto.id === id)
-           if (productoId) {
-               console.log("objeto creado")
-           } else {
-               const prodAdd = {titulo, descripcion, precio, img, id, stock}
-               this.producto.push(prodAdd)
-           }
-       }
+    // agregar producto
+    addProduct (titulo, descripcion, precio, img, code, stock) {
+        if(!(titulo, descripcion, precio, img, code, stock)){
+            console.log("falta informacion");
+        }else if(this.product.find((prod) => prod.code === code)){
+            console.log("codigo de producto ya existente")
+        }else {
+            const prodId = productManager.globalId++
+            const prodAdd = {titulo, descripcion, precio, img, code, stock, prodId}
+            this.product.push(prodAdd)
+        }
+        
+    }
 
-
-   //  devolver el producto
+    // traer producto
     getProduct() {
-       return this.producto
+        return this.product
     }
 
-    getProductById(id) {
-       let productoPorId = this.producto.find(prod => prod.id === id)
-       if(productoPorId) {
-          return productoPorId
-       }else {
-           console.log("el producto no existe")
-       }
+    // filtrar por id
+    getProductById (id) {
+        const filtrarPorId = this.product.find((prod) => prod.prodId === id)
+        if(filtrarPorId){
+            return filtrarPorId
+        }else {
+            console.log("el producto no se encuentra");
+        }
     }
 }
 
-const producto1 = new productManager ("monitor", "monitor Asus 21'", "$50.000", "imagen", 3, 6)
 
 const producto = new productManager()
 
-console.log("array vacio")
-console.log(producto.getProduct())
+// array vacio
+console.log(producto.getProduct());
 
-console.log("primer producto agregado")
-producto.addProduct("monitor", "monitor de 21' full hd", "$22144", "imagen", 1, 3)
-console.log(producto.getProduct())
+// primer producto agregado
+producto.addProduct("monitor", "monitor de 21' full hd", "$22144", "imagen", "abc123", 3);
+console.log(producto.getProduct());
 
-console.log("segundo producto agregado")
-producto.addProduct("mouse", "mouse logitech 10000 dpi", "$5000", "imagen", 2, 3)
-console.log(producto.getProduct())
+// segundo producto agregado
+console.log("segundo push del item");
+producto.addProduct("mouse", "mouse logitech 10000 dpi", "$5000", "imagen", "qwe123", 3);
+console.log(producto.getProduct());
 
-console.log("producto filtrado por id")
-producto.getProductById(1)
-
+// filtrar por id
+console.log("filtrando por id");
+console.log(producto.getProductById(1));
+// id no encontrado
+// console.log(producto.getProductById(5));
 
 
 
