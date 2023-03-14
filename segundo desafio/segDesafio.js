@@ -4,9 +4,9 @@ const { dirname } = require('path')
 class productManager {
     static globalId = 0
 
-    constructor() {
+    constructor(path) {
         this.product = []
-        this.path = './files'
+        this.path = path
         this.fileName = this.path + '/JSONProductos'
     }
 
@@ -35,7 +35,8 @@ class productManager {
         let InfoJson = await fs.promises.readFile(this.fileName, 'utf-8')
         let infoParse = await JSON.parse(InfoJson)
         
-        return console.log(infoParse);
+        console.log(infoParse);
+        return infoParse;
         
     }
 
@@ -46,8 +47,8 @@ class productManager {
 
 
         const filtrarPorId = infoParse.find((prod) => prod.prodId === id)
-
-        return filtrarPorId ? console.log(filtrarPorId) : console.log("el producto no se encuentra");
+        
+        return filtrarPorId ?? 'no se encontro el producto'
 
     }
     // modificar producto
@@ -84,13 +85,14 @@ class productManager {
 }
 
 
-const producto = new productManager()
+// const producto = new productManager()
 
 // array vacio
 // console.log(producto.getProduct());
 
 // primer producto agregado
 // producto.addProduct("monitor", "monitor de 21' full hd", "$22144", "imagen", "abc123", 3);
+// producto.addProduct("monitorito", "monitor de 21' full hd", "$22144", "imagen", "ajc123", 3);
 
 // segundo producto agregado
 // console.log("segundo push del item");
@@ -110,3 +112,4 @@ const producto = new productManager()
 // producto.deleteProductById(0)
 
 
+module.exports = productManager
