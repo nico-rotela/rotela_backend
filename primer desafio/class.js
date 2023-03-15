@@ -17,8 +17,7 @@ class productManager {
             const prodId = productManager.globalId++
             const prodAdd = {titulo, descripcion, precio, img, code, stock, prodId}
             this.product.push(prodAdd)
-        }
-        
+        }        
     }
 
     // traer producto
@@ -33,6 +32,7 @@ class productManager {
             return filtrarPorId
         }else {
             console.log("el producto no se encuentra");
+            return 'not found'
         }
     }
 }
@@ -45,16 +45,16 @@ console.log(producto.getProduct());
 
 // primer producto agregado
 producto.addProduct("monitor", "monitor de 21' full hd", "$22144", "imagen", "abc123", 3);
-console.log(producto.getProduct());
+// console.log(producto.getProduct());
 
 // segundo producto agregado
 console.log("segundo push del item");
 producto.addProduct("mouse", "mouse logitech 10000 dpi", "$5000", "imagen", "qwe123", 3);
-console.log(producto.getProduct());
+// console.log(producto.getProduct());
 
 // filtrar por id
 console.log("filtrando por id");
-console.log(producto.getProductById(1));
+console.log(producto.getProductById(9));
 // id no encontrado
 // console.log(producto.getProductById(5));
 

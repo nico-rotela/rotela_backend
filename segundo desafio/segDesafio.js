@@ -1,13 +1,15 @@
 const fs = require('fs')
 const { dirname } = require('path')
+const { join } = require('path')
+
 
 class productManager {
     static globalId = 0
 
-    constructor(path) {
+    constructor(file) {
         this.product = []
-        this.path = path
-        this.fileName = this.path + '/JSONProductos'
+        this.file = file
+        this.fileName = join(__dirname,file) //this.path + '/JSONProductos' 
     }
 
     // metodos
@@ -15,7 +17,7 @@ class productManager {
     // agregar producto
     addProduct = async (titulo, descripcion, precio, img, code, stock) => {
         // creo la carpeta
-        await fs.promises.mkdir(this.path, { recursive: true })
+        await fs.promises.mkdir(this.file, { recursive: true })
         // agregar el producto
         if(!(titulo, descripcion, precio, img, code, stock)){
             console.log("falta informacion");

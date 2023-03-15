@@ -1,7 +1,7 @@
 import expess from 'express'
 import productManager from '../../segDesafio.js'
 
-const productosImp = new productManager('../../files')
+const productosImp = new productManager('files/JSONProductos')
 // console.log(productosImp);
 
 
@@ -24,5 +24,4 @@ app.get('/productos', async (req, res) => {
 app.get('/:productoId', async (req, res) => {
     const prodId = await productosImp.getProductById(parseInt(req.params.productoId))
     res.send(prodId)
-
 })
