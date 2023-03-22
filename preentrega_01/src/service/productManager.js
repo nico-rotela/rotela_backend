@@ -1,15 +1,13 @@
-const fs = require('fs')
-const { dirname } = require('path')
-const { join } = require('path')
+import fs from 'fs'
 
 
 class productManager {
     static globalId = 0
 
-    constructor(file) {
+    constructor(path) {
         this.product = []
-        this.file = file
-        this.fileName = join(__dirname,file) //this.path + '/JSONProductos' 
+        this.path = './files'
+        this.fileName = this.path + '/jsonProductos.json' 
     }
 
     // metodos
@@ -17,7 +15,7 @@ class productManager {
     // agregar producto
     addProduct = async (titulo, descripcion, precio, img, code, stock) => {
         // creo la carpeta
-        await fs.promises.mkdir(this.file, { recursive: true })
+        await fs.promises.mkdir(this.path, { recursive: true })
         // agregar el producto
         if(!(titulo, descripcion, precio, img, code, stock)){
             console.log("falta informacion");
@@ -53,22 +51,6 @@ class productManager {
         return filtrarPorId ?? 'no se encontro el producto'
 
     }
-    // modificar producto
-    updateProductById = async (id, updatedData) => {
-        let info = await fs.promises.readFile(this.fileName, 'utf-8')
-        let infoParse = await JSON.parse(info)
-    
-        if (await this.getProductById(id)) {
-          const newArr = infoParse.map((item) => {
-            return id == item.prodId ? { ...item, ...updatedData } : item
-            console.log('Product updated succesfully')
-          })
-          await fs.promises.writeFile(this.filename, JSON.stringify(newArr))
-        } else {
-          console.log(`Product ID ${id} does not exist`)
-        }
-      }
-
 
     // borrar por id
     deleteProductById = async (id) => {
@@ -77,41 +59,15 @@ class productManager {
     
         const nuevoArr = infoParse.filter(item => item.prodId !== id)
         await fs.promises.writeFile(this.fileName, JSON.stringify(nuevoArr))
-        console.log(nuevoArr);
-        
-        
-        
+        console.log(nuevoArr); 
     }
 
      
 }
 
+const producto = new productManager()
 
-// const producto = new productManager()
-
-// array vacio
-// console.log(producto.getProduct());
-
-// primer producto agregado
 // producto.addProduct("monitor", "monitor de 21' full hd", "$22144", "imagen", "abc123", 3);
-// producto.addProduct("monitorito", "monitor de 21' full hd", "$22144", "imagen", "ajc123", 3);
-
-// segundo producto agregado
-// console.log("segundo push del item");
 // producto.addProduct("mouse", "mouse logitech 10000 dpi", "$5000", "imagen", "qwe123", 3);
-// console.log(producto.getProduct());
 
-// filtrar por id
-// console.log("filtrando por id");
-// console.log(producto.getProductById(1));
-// producto.getProductById(0)
-// // id no encontrado
-// // console.log(producto.getProductById(5));
-
-
-// borrar item
-// console.log("borrando item");
-// producto.deleteProductById(0)
-
-
-module.exports = productManager
+export default productManager
