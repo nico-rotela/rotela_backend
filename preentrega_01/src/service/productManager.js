@@ -69,5 +69,5 @@ const producto = new productManager()
 
 // producto.addProduct("monitor", "monitor de 21' full hd", "$22144", "imagen", "abc123", 3);
 // producto.addProduct("mouse", "mouse logitech 10000 dpi", "$5000", "imagen", "qwe123", 3);
-
+// producto.getProduct()
 export default productManager

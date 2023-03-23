@@ -1,5 +1,5 @@
 import { Router } from "express";
-import productManager from "../service/productManager.js";
+import productManager from "../service/productManager.js"
 
 const router = Router()
 // instancio la class de productos
@@ -18,7 +18,7 @@ router.get('/:productosId', async (req, res) => {
     res.send(prodId)
 })
 
-// crear un objeto nuevo(ver por que se borra los productos anteriores)
+// crear un objeto nuevo
 router.post('/', async (req, res) => {
     const prod = req.body
     await productosManager.addProduct(prod.titulo, prod.descripcion, prod.precio, prod.img, prod.code, prod.stock)
