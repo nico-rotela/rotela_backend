@@ -12,9 +12,6 @@ app.use(Express.urlencoded({ extended: true }))
 app.use('/api/productos/', productosManager)
 app.use('/api/carts/', cartManager)
 
-app.get('/', (req, res) => {
-    res.send("holiis")
-})
 
 // escuchando el servidor
 app.listen(port, () => {

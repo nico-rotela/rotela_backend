@@ -17,11 +17,12 @@ router.get('/:cid', async (req, res) => {
 })
 
 // pushear producto al carrito 
-router.post('/:cid/product'), async (req, res) => {
+router.post('/:cid/product/:pid', async (req, res) => {
     const cid = parseInt(req.params.cid)
-    await cartmanager.addProduct(cid, producto)
-    res.send({succes})
-}
+    const product = req.body;
+    await cartmanager.addProduct(cid, product.carrito)
+    res.status(201).send({mensaje: "producto agregado"})
+})
 
 
 export default router

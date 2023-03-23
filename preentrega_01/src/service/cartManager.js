@@ -3,7 +3,7 @@ import fs from 'fs'
 
 class cartManager {
     static globalId = 0
-    static quantity = 0
+
     constructor(path){
         this.products = []
         this.path = './files'
@@ -11,7 +11,7 @@ class cartManager {
     }
 
     // metodos
-
+    
     // crear el directorio
     crearFiles = async () => {
         await fs.promises.mkdir(this.path, {recursive: true})
@@ -32,30 +32,32 @@ class cartManager {
         }
     }
 
-    // cargar producto al carrito
+    // // cargar producto al carrito
     addProduct = async (cid,producto) => {
         let InfoJson = await fs.promises.readFile(this.fileName, 'utf-8')
         let infoParse = await JSON.parse(InfoJson)
-        console.log(infoParse);
+        console.log(cid,producto);
         // comparar cid
-        const filtrarCarrito = infoParse.find((prod) => prod.prodId === cid)
+        let filtrarCarrito = infoParse.find((prod) => prod.prodId === cid)
         
         if(filtrarCarrito){
-            const prodCart = producto          
-            const indice = filtrarCarrito.carrito.findIndex((prod) => prod.id === producto.id)
+            const prodCart = producto[0]          
+            const indice = filtrarCarrito.carrito.findIndex((prod) => prod.producto === producto[0].producto)
+            console.log('este es el indice ', indice);
             if(indice != -1){
-                filtrarCarrito.carrito[indice].quantity = filtrarCarrito.carrito[indice].quantity + producto.quantity
+                filtrarCarrito.carrito[indice].quantity = filtrarCarrito.carrito[indice].quantity + producto[0].quantity
             }else{
                 filtrarCarrito.carrito.push(prodCart)
+                console.log('estoey en el else');
             }
         }else{
-            console.log('error');
+            filtrarCarrito = infoParse
+            console.log('error en addproduct');
         }
         await fs.promises.writeFile(this.fileName, JSON.stringify([filtrarCarrito]))
         
     }
 
-    
 
 
     // filtrar los carrito (cid)
@@ -74,17 +76,10 @@ class cartManager {
 
 const carrito = new cartManager()
 
-
+// carrito.crearProd("hola",123)
+// carrito.agregarProductoAlcarrito(0,2,4)
 // carrito.addCart()
 // carrito.getCarrito(1)
 // carrito.addProduct(0, {producto:2,quantity:1})
-// carrito.pushCar(0)
-
-// carrito.crearFiles()
-// carrito.addCart()
-// carrito.addCart()
-// console.log(carrito.crearCarrito('prodcuto'));
-// console.log(carrito.crearCarrito('prodcuto1'));
-// console.log(carrito.crearCarrito('prodcuto2'));
 
 export default cartManager
