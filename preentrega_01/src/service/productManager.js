@@ -35,7 +35,7 @@ class productManager {
         let InfoJson = await fs.promises.readFile(this.fileName, 'utf-8')
         let infoParse = await JSON.parse(InfoJson)
         
-        console.log(infoParse);
+        // console.log(infoParse);
         return infoParse;
         
     }

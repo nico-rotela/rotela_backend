@@ -1,0 +1,17 @@
+<div>
+    {{#each prodRender}}
+   <p>producto: {{this.titulo}}</p>
+   <p>descripcion: {{this.descripcion}}</p>
+   <p>precio: {{this.precio}}</p>
+   <p>stock: {{this.stock}}</p>
+{{/each}}
+<h1>agregar un producto</h1>
+<form action="/api/prodrealtime/" method="post">
+    <input type="text" id="formulario">
+    <button type="submit">enviar</button>
+</form>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
