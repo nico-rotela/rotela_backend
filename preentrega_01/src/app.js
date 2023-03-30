@@ -48,7 +48,14 @@ socketServer.on('connection', socket=>{
     socket.on('msg', data => {
         console.log(data);
     })
-    socket.on('holis', data => {
-        console.log(data);
-    })
+
+    socket.emit('msg_02', 'mensage enviado desde el back')
+
+    const logs = [];
+   
+    socket.on("producto",data=>{
+        logs.push({socketid:socket.id,producto:data})
+        socketServer.emit('log',{logs});
+    });
+
 })
