@@ -1,11 +1,12 @@
 import express  from "express";
 import productosManager from "./routes/productos.router.js"
 import cartManager from "./routes/carts.router.js";
-import viewsProducts from "./routes/views.Prod.js"
-import realTimeProducts from './routes/realTime.prod.js'
+// import viewsProducts from "./routes/views.Prod.js"
+// import realTimeProducts from './routes/realTime.prod.js'
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
 import {Server} from 'socket.io'
+import mongoose from 'mongoose'
 
 
 const app = express()
@@ -28,10 +29,10 @@ app.use('/api/productos/', productosManager)
 app.use('/api/carts/', cartManager)
 
 // hbs
-app.use('/api/prodviews', viewsProducts)
+// app.use('/api/prodviews', viewsProducts)
 
 // websocket
-app.use('/api/prodrealtime', realTimeProducts)
+// app.use('/api/prodrealtime', realTimeProducts)
 
 // escuchando el servidor
 const httpServer = app.listen(port, () => {
@@ -59,3 +60,16 @@ socketServer.on('connection', socket=>{
     });
 
 })
+
+// conectamos a la base de datos
+const DB = 'mongodb+srv://nicolasrotela:nicolas@cluster0.md0jeex.mongodb.net/Ecommerce?retryWrites=true&w=majority'
+const connectMongoDB = async()=>{
+    try {
+        await mongoose.connect(DB)
+        console.log("Conectado con exito a MongoDB usando Mongoose");
+    } catch (error) {
+        console.error("No se pudo conectar a la BD usando Moongose: " + error);
+        process.exit();
+    }
+}
+connectMongoDB()
