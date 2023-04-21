@@ -28,6 +28,7 @@ router.post('/', async (req, res) => {
 })
 
 
+
 // -----------------------------
 // no supe hacer la relacion para pushear un producto dentro del carrito sin harcodearlo
 // -----------------------

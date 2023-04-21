@@ -33,6 +33,6 @@ const cartSchema = ({
         default: []
     }
 })
-// SOLO CREAR EL ARRAY
+
 export const cartModel = mongoose.model(cartCollection, cartSchema)
 

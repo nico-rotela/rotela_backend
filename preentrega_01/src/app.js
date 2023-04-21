@@ -1,8 +1,9 @@
 import express  from "express";
 import productosManager from "./routes/productos.router.js"
 import cartManager from "./routes/carts.router.js";
-// import viewsProducts from "./routes/views.Prod.js"
-// import realTimeProducts from './routes/realTime.prod.js'
+import viewsProducts from "./routes/views.Prod.js"
+import chat from './routes/chat.router.js'
+import { chatModel } from "./dao/models/chatSchema.js";
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
 import {Server} from 'socket.io'
@@ -28,11 +29,12 @@ app.use(express.static(__dirname+'/public'));
 app.use('/api/productos/', productosManager)
 app.use('/api/carts/', cartManager)
 
-// hbs
-// app.use('/api/prodviews', viewsProducts)
+     // HANDLEBARS
+// renderizado de los productos cargados
+app.use('/api/prodviews', viewsProducts)
 
-// websocket
-// app.use('/api/prodrealtime', realTimeProducts)
+// CHAT
+app.use('/api/chat', chat)
 
 // escuchando el servidor
 const httpServer = app.listen(port, () => {
@@ -40,24 +42,24 @@ const httpServer = app.listen(port, () => {
 })
 
 const socketServer = new Server(httpServer)
+let messages = []
 
 // abro el canal de comunicacion
-socketServer.on('connection', socket=>{
-    console.log('Nuevo cliente conectado!');
+socketServer.on('connection', socket =>{
 
-    // escuchamos al cliente
-    socket.on('msg', data => {
-        console.log(data);
+    // CHAT
+    // recibo el mensaje
+    socket.on('message', async data => {
+       await chatModel.insertMany(data)
+       messages.push(data)
+        socketServer.emit('messageLogs' , messages )
     })
 
-    socket.emit('msg_02', 'mensage enviado desde el back')
+    // alerta de que un usuario se conecto al chat a los demas conectados
+    socket.on('userConnected', data => {
+        socket.broadcast.emit('userConnected', data.user)
+    })
 
-    const logs = [];
-   
-    socket.on("producto",data=>{
-        logs.push({socketid:socket.id,producto:data})
-        socketServer.emit('log',{logs});
-    });
 
 })
 
