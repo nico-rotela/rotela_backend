@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const productCollection = 'productos'
 
@@ -19,10 +20,13 @@ const numberTypeSchemaNonUniqueRequerired = {
     required: true
 }
 
-const productSchema = ({
+const productSchema = new mongoose.Schema ({
     titulo: stringTypeSchemaNonUniqueRequired,
     precio: numberTypeSchemaNonUniqueRequerired,
     stock: numberTypeSchemaNonUniqueRequerired
 })
+
+// usamos el plugins
+productSchema.plugin(mongoosePaginate);
 
 export const ProductModel = mongoose.model(productCollection, productSchema)

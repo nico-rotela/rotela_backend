@@ -1,19 +1,59 @@
 import { Router } from "express";
 // import cartManager from '../service/cartManager.js'
 import { cartModel } from "../dao/models/cartsSchema.js";
+import { ProductModel } from "../dao/models/productsSchema.js";
 
 const router = Router()
 
+// traer todos los carritos con sus productos
 router.get('/', async (req, res) => {
     try {
         let cart = await cartModel.find()
-        console.log(cart);
         res.send(cart)
     } catch (error) {
         console.error("No se pudo obtener productos con moongose: " + error);
         res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});
     }
 })
+
+// agregar un producto con populate
+router.post('/:cid/producto/:pid', async (req, res) => {
+    // capturo carrito id
+    let cid = req.params.cid
+    // capturo producto id
+    let pid = req.params.pid
+
+    let cartPopu = await cartModel.findOne({_id: cid}).populate('producto')
+    
+    console.log('este es el cartppopu');
+    console.log(cartPopu);
+
+    let carrito = await cartModel.findOne({_id: cid})
+    carrito.producto.push({prods: pid})
+    console.log(carrito);
+
+    let result = await cartModel.updateOne({_id: cid}, carrito)
+    res.send(result)
+    console.log(result);
+    // falta un condicional de quantity(borrar hardcoder de app.js)
+})
+
+// borrar un producto de un carrito
+router.delete('/:cid/productoDelete/:pid', async (req, res) => {
+    // capturo carrito id
+    let cid = req.params.cid
+    // capturo producto id
+    let pid = req.params.pid
+
+    let carrito = await cartModel.findOne({_id: cid})
+
+    let cart = carrito.producto.filter(item => item._id !== pid)
+
+    let result = await cartModel.deleteOne({_id: cid}, cart)
+
+    res.send(result)
+})
+
 
 // crear carrito
 router.post('/', async (req, res) => {
@@ -26,12 +66,6 @@ router.post('/', async (req, res) => {
         res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});
     }
 })
-
-
-
-// -----------------------------
-// no supe hacer la relacion para pushear un producto dentro del carrito sin harcodearlo
-// -----------------------
 
 
 

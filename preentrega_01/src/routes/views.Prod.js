@@ -4,6 +4,7 @@ import { ProductModel } from "../dao/models/productsSchema.js";
 
 const router = Router()
 
+// muestro todos los productos cargados en la base de datos
 router.get('/', async (req,res) => {
     try {
         let prodRender = await ProductModel.find().lean()
@@ -14,6 +15,17 @@ router.get('/', async (req,res) => {
     }
 })
 
+// productos usando paginate
+router.get('/prods', async (req, res) => {
+    let page = parseInt(req.query.page)
+    if(!page) page = 1
+
+    let result = await ProductModel.paginate({},{page,limit:3,lean:true})
+    result.prevLink = result.hasPrevPage?`http://localhost:8080/api/prodviews/prods?page=${result.prevPage}`:'';
+    result.nextLink = result.hasNextPage?`http://localhost:8080/api/prodviews/prods?page=${result.nextPage}`:'';
+    result.isValid= !(page<=0||page>result.totalPages)
+    res.render('home',result)
+})
 
 // FS
 

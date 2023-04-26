@@ -8,6 +8,8 @@ import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
 import {Server} from 'socket.io'
 import mongoose from 'mongoose'
+import { cartModel } from "./dao/models/cartsSchema.js";
+import { ProductModel } from "./dao/models/productsSchema.js";
 
 
 const app = express()
@@ -69,6 +71,33 @@ const connectMongoDB = async()=>{
     try {
         await mongoose.connect(DB)
         console.log("Conectado con exito a MongoDB usando Mongoose");
+
+        // let nuevoCarrito = await cartModel.create({
+        //     nombre: 'carritohard'
+        // })
+
+        // let cart = await cartModel.findOne({_id: nuevoCarrito._id}).populate('producto')
+        // console.log(cart);
+
+        // let nuevoProd = await ProductModel.create({
+        //     titulo:"mopruebause",
+        //     precio:4000,
+        //     stock:6
+        // })
+
+        // let prodHard = await ProductModel.findOne({_id: nuevoProd._id});
+        // console.log(prodHard);
+
+
+        // let carritooo = await cartModel.findOne({_id: "64459305ed3afcc794065799"})
+        // console.log(carritooo);
+        // carritooo.producto.push({prods: "644594f68bd66f610b14597c"})
+        // console.log(JSON.stringify(carritooo, null, '/t'));
+
+        // let result = await cartModel.updateOne({_id:'64459305ed3afcc794065799'}, carritooo)
+        // console.log(result);
+
+
     } catch (error) {
         console.error("No se pudo conectar a la BD usando Moongose: " + error);
         process.exit();

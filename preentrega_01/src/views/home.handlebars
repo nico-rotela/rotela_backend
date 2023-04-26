@@ -4,6 +4,35 @@
       <p>titulo: {{this.titulo}}</p>
       <p>precio: {{this.precio}}</p>
       <p>stock: {{this.stock}}</p>
+      <button id="{{this._id}}">agregar al carrito</button>
    {{/each}}
-
 </div>
+<br/>
+
+
+<div>
+    {{#each docs}}
+    <div>
+        <h2>informacion de este producto</h2>
+      <p>titulo: {{this.titulo}}</p>
+      <p>precio: {{this.precio}}</p>
+      <p>stock: {{this.stock}}</p>
+      <button id="{{this._id}}">agregar al carrito</button>
+    </div>
+    <br/>
+    {{/each}}
+</div>
+<div>
+    {{#if hasPrevPage}}
+        <a href={{this.prevLink}}> Anterior</a>
+    {{/if}}
+    &nbsp;
+    {{this.page}}
+    &nbsp;
+     {{#if hasNextPage}}
+        <a href={{this.nextLink}}>Siguiente </a>
+    {{/if}} 
+</div>
+
+
+<script src="../public/js/index.js"></script>

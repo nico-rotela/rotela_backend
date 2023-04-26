@@ -21,10 +21,10 @@ const numberTypeSchemaNonUniqueRequerired = {
 
 const cartSchema = ({
     nombre: stringTypeSchemaNonUniqueRequired,
-    prods: {
+    producto: {
         type: [
             {
-                producto:{
+                prods:{
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'productos'
                 }
