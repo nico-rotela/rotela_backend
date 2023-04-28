@@ -2,6 +2,7 @@ import { Router } from "express";
 // import cartManager from '../service/cartManager.js'
 import { cartModel } from "../dao/models/cartsSchema.js";
 import { ProductModel } from "../dao/models/productsSchema.js";
+import productManager from "../service/productManager.js";
 
 const router = Router()
 
@@ -16,45 +17,57 @@ router.get('/', async (req, res) => {
     }
 })
 
-// agregar un producto con populate
-router.post('/:cid/producto/:pid', async (req, res) => {
-    // capturo carrito id
-    let cid = req.params.cid
-    // capturo producto id
-    let pid = req.params.pid
+// agregar un producto 
+router.post('/cid/producto/pid', async (req, res) => {
+    const {cid, pid} = req.body
 
-    let cartPopu = await cartModel.findOne({_id: cid}).populate('producto')
-    
-    console.log('este es el cartppopu');
-    console.log(cartPopu);
+    let cart = await cartModel.findById(cid)
+    console.log(cart);
+    let product = await ProductModel.findById(pid)
+    console.log(product);
 
-    let carrito = await cartModel.findOne({_id: cid})
-    carrito.producto.push({prods: pid})
-    console.log(carrito);
+    cart.producto.push({prods: product})
 
-    let result = await cartModel.updateOne({_id: cid}, carrito)
+    let result = await cartModel.updateOne(cart)
+    console.log('resultado del carrito');
+    console.log(cart);
+
     res.send(result)
-    console.log(result);
-    // falta un condicional de quantity(borrar hardcoder de app.js)
 })
 
 // borrar un producto de un carrito
-router.delete('/:cid/productoDelete/:pid', async (req, res) => {
-    // capturo carrito id
-    let cid = req.params.cid
-    // capturo producto id
-    let pid = req.params.pid
+router.delete('/cid/productoDelete/pid', async (req, res) => {
+    const {cid, pid} = req.body
 
-    let carrito = await cartModel.findOne({_id: cid})
+    let cart = await cartModel.findById(cid)
+    console.log(cart.producto);
+   
+    let itemRemove = await cart.producto.find(prod => prod.prods == pid)
+    console.log(itemRemove);
 
-    let cart = carrito.producto.filter(item => item._id !== pid)
+    await cart.producto.pull(itemRemove)
+    await cart.save()
 
-    let result = await cartModel.deleteOne({_id: cid}, cart)
-
-    res.send(result)
+    res.send(cart)
 })
 
+// modificar producto de carrito
+router.put('/:cid/producto/:pid', async(res,req) => {
 
+    const {prods, quantity} = req.body
+    
+    let cart = await cartModel.findById(cid)
+    console.log(cart.producto);
+
+
+
+    await cart.producto.updateOne({"_id": cid},
+                            {$addToSet:{
+                            "producto":
+                            {$each:[{"prods": prods,"quantity": quantity}]}
+                            }}
+    )
+})
 // crear carrito
 router.post('/', async (req, res) => {
     try {
@@ -67,7 +80,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-
+// await carrito.updateOne({ _id: ObjectId(_id) }, { $set: {hora:hora,email:email,direccion:direccion} })
 
 
 
