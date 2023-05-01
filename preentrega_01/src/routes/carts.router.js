@@ -1,8 +1,8 @@
 import { Router } from "express";
 // import cartManager from '../service/cartManager.js'
+// import productManager from "../service/productManager.js";
 import { cartModel } from "../dao/models/cartsSchema.js";
 import { ProductModel } from "../dao/models/productsSchema.js";
-import productManager from "../service/productManager.js";
 
 const router = Router()
 
@@ -10,6 +10,8 @@ const router = Router()
 router.get('/', async (req, res) => {
     try {
         let cart = await cartModel.find()
+        console.log('estos son los productos del carrito');
+        console.log(JSON.stringify(cart, null, '\t'));
         res.send(cart)
     } catch (error) {
         console.error("No se pudo obtener productos con moongose: " + error);
@@ -21,16 +23,17 @@ router.get('/', async (req, res) => {
 router.post('/cid/producto/pid', async (req, res) => {
     const {cid, pid} = req.body
 
-    let cart = await cartModel.findById(cid)
+    let cart = await cartModel.findById(cid).populate('producto')
     console.log(cart);
     let product = await ProductModel.findById(pid)
     console.log(product);
 
     cart.producto.push({prods: product})
+    console.log(JSON.stringify(cart, null, '\t'));
 
     let result = await cartModel.updateOne(cart)
     console.log('resultado del carrito');
-    console.log(cart);
+    console.log(JSON.stringify(cart, null, '\t'));
 
     res.send(result)
 })
@@ -51,23 +54,26 @@ router.delete('/cid/productoDelete/pid', async (req, res) => {
     res.send(cart)
 })
 
+// vaciar carrito
+router.post('/vaciarCarrito', async (req, res) => {
+    const {cid} = req.body
+    let cart = await cartModel.findById(cid)
+    
+    if(cart){
+        cart.producto = []
+        await cart.save()
+    }
+    console.log('se vacio el carrito');
+    res.send(cart)
+})
+
+
 // modificar producto de carrito
 router.put('/:cid/producto/:pid', async(res,req) => {
-
-    const {prods, quantity} = req.body
-    
-    let cart = await cartModel.findById(cid)
-    console.log(cart.producto);
-
-
-
-    await cart.producto.updateOne({"_id": cid},
-                            {$addToSet:{
-                            "producto":
-                            {$each:[{"prods": prods,"quantity": quantity}]}
-                            }}
-    )
 })
+
+
+
 // crear carrito
 router.post('/', async (req, res) => {
     try {
@@ -80,7 +86,6 @@ router.post('/', async (req, res) => {
     }
 })
 
-// await carrito.updateOne({ _id: ObjectId(_id) }, { $set: {hora:hora,email:email,direccion:direccion} })
 
 
 

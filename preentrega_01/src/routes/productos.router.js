@@ -18,12 +18,6 @@ router.get('/', async (req,res) => {
 })
 
 
-// traer los productos filtrados por id
-router.get('/:productosId', async (req, res) => {
-    const prodId = await productosManager.getProductById(parseInt(req.params.productosId))
-    res.send(prodId)
-})
-
 
 // cargar producto
 router.post('/', async (req, res) => {
