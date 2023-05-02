@@ -9,8 +9,8 @@ const router = Router()
 // traer todos los carritos con sus productos
 router.get('/', async (req, res) => {
     try {
-        let cart = await cartModel.find()
-        console.log('estos son los productos del carrito');
+        let cart = await cartModel.find().populate('producto.prods')
+        console.log('estoy en el get!!');
         console.log(JSON.stringify(cart, null, '\t'));
         res.send(cart)
     } catch (error) {
@@ -21,28 +21,44 @@ router.get('/', async (req, res) => {
 
 // agregar un producto 
 router.post('/cid/producto/pid', async (req, res) => {
-    const {cid, pid} = req.body
+    try {
+        const {cid, pid} = req.body
 
-    let cart = await cartModel.findById(cid).populate('producto')
-    console.log(cart);
-    let product = await ProductModel.findById(pid)
-    console.log(product);
+        let cart = await cartModel.findById(cid).populate('producto')
+        console.log(cart);
+        let product = await ProductModel.findById(pid)
+        console.log(product);
 
-    cart.producto.push({prods: product})
-    console.log(JSON.stringify(cart, null, '\t'));
+        let validarProd = cart.producto.find(prod => prod.prods == pid)
 
-    let result = await cartModel.updateOne(cart)
-    console.log('resultado del carrito');
-    console.log(JSON.stringify(cart, null, '\t'));
+        if (validarProd) {
+            validarProd.quantity += 1
+        }else{
+            cart.producto.push({prods: product})
+            console.log(JSON.stringify(cart, null, '\t'));
+        }
 
-    res.send(result)
+
+        let result = await cartModel.updateOne(cart)
+        console.log('resultado del carrito');
+        console.log(JSON.stringify(cart, null, '\t'));
+
+        res.send(result)
+        
+    } catch (error) {
+        console.error("No se pudo agregar producto al carrito " + error);
+        res.status(500).send({error: "No se pudo agregar producto al carrito", message: error});
+    }
+    
 })
 
 // borrar un producto de un carrito
 router.delete('/cid/productoDelete/pid', async (req, res) => {
-    const {cid, pid} = req.body
 
-    let cart = await cartModel.findById(cid)
+    try {
+        const {cid, pid} = req.body
+
+    let cart = await cartModel.findById(cid).populate('producto')
     console.log(cart.producto);
    
     let itemRemove = await cart.producto.find(prod => prod.prods == pid)
@@ -52,6 +68,12 @@ router.delete('/cid/productoDelete/pid', async (req, res) => {
     await cart.save()
 
     res.send(cart)
+    } catch (error) {
+        console.error("No se pudo borrar el producto deseado " + error);
+        res.status(500).send({error: "No se pudo borrar el producto", message: error});
+    }
+
+    
 })
 
 // vaciar carrito
