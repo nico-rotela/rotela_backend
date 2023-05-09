@@ -9,28 +9,54 @@ import __dirname from './utils.js'
 import {Server} from 'socket.io'
 import mongoose from 'mongoose'
 import cartRemder from './routes/cart.render.js'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
+import sessionRouter from './routes/sesion.router.js'
+import userviews from './routes/users.views.router.js'
 
 
 const app = express()
 const port = 8080
 
+// ---------------------      config json      ----------------------------
 // preparar la configuracion del servidor para recibir objetos JSON
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// ---------------------     config handlebars       ----------------------------
 
 // configuracion de hbs(handlerbars)
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
 
+// ---------------------     public       ----------------------------
+
 // carpeta public
 app.use(express.static(__dirname+'/public'));
+
+// ---------------------     session       ----------------------------
+
+// configurar objeto de config de SESSION
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://nicolasrotela:nicolas@cluster0.md0jeex.mongodb.net/Ecommerce?retryWrites=true&w=majority',
+        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+        ttl: 40
+    }) ,
+    secret: 'nicosecret',
+    resave: false,
+    saveUninitialized: true
+}))
+
+// ---------------------      routes principales      ----------------------------
 
 // configuro los routes
 app.use('/api/productos/', productosManager)
 app.use('/api/carts/', cartManager)
 
-     // HANDLEBARS
+// ---------------------     otros routes       ----------------------------
+
 // renderizado de los productos cargados
 app.use('/api/prodviews', viewsProducts)
 
@@ -40,10 +66,21 @@ app.use('/api/chat', chat)
 // vista del carrito
 app.use('/api/cartviews', cartRemder)
 
+// session
+app.use('/api/session', sessionRouter)
+
+// users
+app.use('/api/users', userviews)
+
+// ---------------------     config server       ----------------------------
+
 // escuchando el servidor
 const httpServer = app.listen(port, () => {
     console.log(`server corriendo en el servidor: ${port}`);
 })
+
+// ---------------------     chat socket       ----------------------------
+
 
 const socketServer = new Server(httpServer)
 let messages = []
@@ -66,6 +103,8 @@ socketServer.on('connection', socket =>{
 
 
 })
+
+// ---------------------      coneccion a base de datos      ----------------------------
 
 // conectamos a la base de datos
 const DB = 'mongodb+srv://nicolasrotela:nicolas@cluster0.md0jeex.mongodb.net/Ecommerce?retryWrites=true&w=majority'
