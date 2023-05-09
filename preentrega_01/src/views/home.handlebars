@@ -1,3 +1,13 @@
+<div>
+    <h1>Tu perfil (sin datos sensibles)</h1>
+    <p>{{user.name}}</p>
+    <p>{{user.email}}</p>
+    <p>{{user.age}}</p>
+</div>
+
+<form action="/api/session/logout" method="GET">
+        <button type="submit"> logout </button>
+</form>
 
 <div>
    {{#each prodRender}}
@@ -8,11 +18,12 @@
       <button id="{{this._id}}">agregar al carrito</button>
    {{/each}}
 </div>
+
 <br/>
 
 
 <div>
-    {{#each docs}}
+    {{#each result.docs}}
     <div>
         <h2>informacion de este producto</h2>
       <p>titulo: {{this.titulo}}</p>
@@ -23,15 +34,17 @@
     <br/>
     {{/each}}
 </div>
+
 <div>
-    {{#if hasPrevPage}}
-        <a href={{this.prevLink}}> Anterior</a>
+    {{#if result.hasPrevPage}}
+        <a href={{this.result.prevLink}}> Anterior</a>
     {{/if}}
     &nbsp;
-    {{this.page}}
+    {{this.result.page}}
     &nbsp;
-     {{#if hasNextPage}}
-        <a href={{this.nextLink}}>Siguiente </a>
+     {{#if result.hasNextPage}}
+        <a href={{this.result.nextLink}}>Siguiente </a>
     {{/if}} 
 </div>
 
+<script>"/js/logout.js"</script>

@@ -45,6 +45,17 @@ router.post('/login', async (req, res) => {
 
 })
 
+// destruir la session
+router.get('/logout', (req, res) => {
+    req.session.destroy(error => {
+        if(error){
+            res.json({error: 'error de logout', msg: 'error al cerrar session'})
+        }
+        res.render('logout')
+    })
+})
+
+
 export default router
 
 

@@ -17,6 +17,8 @@ router.get('/', async (req,res) => {
 
 // productos usando paginate
 router.get('/prods', async (req, res) => {
+    const user = req.session.user
+
     let page = parseInt(req.query.page)
     if(!page) page = 1
 
@@ -24,8 +26,13 @@ router.get('/prods', async (req, res) => {
     result.prevLink = result.hasPrevPage?`http://localhost:8080/api/prodviews/prods?page=${result.prevPage}`:'';
     result.nextLink = result.hasNextPage?`http://localhost:8080/api/prodviews/prods?page=${result.nextPage}`:'';
     result.isValid= !(page<=0||page>result.totalPages)
-    res.render('home',result)
+    res.render('home', {
+        result: result,
+        user: user
+    })
 })
+
+
 
 // FS
 
