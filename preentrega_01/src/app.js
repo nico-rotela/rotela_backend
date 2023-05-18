@@ -13,6 +13,9 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import sessionRouter from './routes/sesion.router.js'
 import userviews from './routes/users.views.router.js'
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+import githubLogin from './routes/github.login.views.router.js'
 
 
 const app = express()
@@ -35,6 +38,7 @@ app.set('view engine', 'handlebars');
 // carpeta public
 app.use(express.static(__dirname+'/public'));
 
+
 // ---------------------     session       ----------------------------
 
 // configurar objeto de config de SESSION
@@ -48,6 +52,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }))
+
+// ---------------------     passport       ----------------------------
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // ---------------------      routes principales      ----------------------------
 
@@ -71,6 +81,9 @@ app.use('/api/session', sessionRouter)
 
 // users
 app.use('/api/users', userviews)
+
+// loogin gitHub
+app.use('/github', githubLogin)
 
 // ---------------------     config server       ----------------------------
 

@@ -11,7 +11,7 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-    res.render('profile', {
+    res.render('home', {
         user: req.session.user
     })
 })
