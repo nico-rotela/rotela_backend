@@ -1,8 +1,11 @@
 import { Router } from "express";
 // import productManager from "../service/productManager.js"
 import { ProductModel } from "../dao/models/productsSchema.js";
+import getDatosControllers from '../controllers/products.controler.js'
 
 const router = Router()
+
+router.get('/prueba', getDatosControllers)
 
 // muestro todos los productos cargados en la base de datos
 router.get('/', async (req,res) => {

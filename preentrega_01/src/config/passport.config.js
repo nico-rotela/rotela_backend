@@ -1,11 +1,16 @@
 import passport from 'passport'
 import passportLocal from 'passport-local'
+import jwtStratergy from 'passport-jwt'
 import githubStrategy from 'passport-github2'
 import userModel from '../dao/models/userSchema.js'
 import { createHash, isValidPassword } from '../utils.js'
+import { PRIVATE_KEY } from '../utils.js'
 
 // Declaro nuestra estrategia
 const localStrategy = passportLocal.Strategy;
+
+const JwtStrategy = jwtStratergy.Strategy;
+const ExtractJWT = jwtStratergy.ExtractJwt;
 
 const initializePassport = () => {
 
@@ -83,7 +88,7 @@ const initializePassport = () => {
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
             try {
                 const user = await userModel.findOne({ email: username });
-                console.log("Usuario encontrado para login:");
+                console.log("(desde passport) Usuario encontrado para login:");
                 console.log(user);
                 if (!user) {
                     console.warn("User doesn't exists with username: " + username);
@@ -93,12 +98,38 @@ const initializePassport = () => {
                     console.warn("Invalid credentials for user: " + username);
                     return done(null, false);
                 }
+                console.log('return del user', user);
                 return done(null, user);
             } catch (error) {
                 return done(error);
             }
         })
     );
+
+        
+    // JWT CON COOKIES
+
+     //Estrategia de obtener Token JWT por Cookie:
+     passport.use('jwt', new JwtStrategy(
+        // extraer la  cookie
+        {
+            jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+            secretOrKey: PRIVATE_KEY
+        },
+        // Ambiente Async
+        async(jwt_payload, done)=>{
+            console.log("Entrando a passport Strategy con JWT.");
+            try {
+                console.log("JWT obtenido del payload");
+                console.log(jwt_payload);
+                return done(null, jwt_payload.user)
+            } catch (error) {
+                console.error(error);
+                return done(error);
+            }
+        }
+    ));
+
 
     //Funciones de Serializacion y Desserializacion
     passport.serializeUser((user, done) => {
@@ -114,5 +145,20 @@ const initializePassport = () => {
         }
     });
 }
+
+// Funcion para hacer la extraccion de la cookie
+const cookieExtractor = req =>{
+    let token = null;
+    console.log("Entrando a cookie extractor");
+    if(req && req.cookies){ //Validamos que exista el request y las cookies.
+       console.log("Cooikies presentes!");
+       console.log(req.cookies);
+       token = req.cookies['jwtCookieToken'];
+       console.log("token obtenido desde cookie");
+       console.log(token);
+    }
+    return token;
+}
+
 
 export default initializePassport

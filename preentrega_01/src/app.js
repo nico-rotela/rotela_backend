@@ -13,9 +13,11 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import sessionRouter from './routes/sesion.router.js'
 import userviews from './routes/users.views.router.js'
+import jwtRouter from './routes/jwt.router.js'
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import githubLogin from './routes/github.login.views.router.js'
+import cookieParser from 'cookie-parser'
 
 
 const app = express()
@@ -53,6 +55,10 @@ app.use(session({
     saveUninitialized: true
 }))
 
+// ---------------------     cookie       ----------------------------
+
+app.use(cookieParser('nikoS3cr3tC0d3'))
+
 // ---------------------     passport       ----------------------------
 initializePassport();
 app.use(passport.initialize());
@@ -81,6 +87,9 @@ app.use('/api/session', sessionRouter)
 
 // users
 app.use('/api/users', userviews)
+
+// login jwt
+app.use('/api/jwt', jwtRouter)
 
 // loogin gitHub
 app.use('/github', githubLogin)
