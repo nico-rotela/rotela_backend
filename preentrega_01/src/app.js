@@ -1,23 +1,34 @@
+// ---------------------     express       ----------------------------
 import express  from "express";
-import productosManager from "./routes/productos.router.js"
-import cartManager from "./routes/carts.router.js";
-import viewsProducts from "./routes/views.Prod.js"
-import chat from './routes/chat.router.js'
+// ---------------------     chat Schema       ----------------------------
 import { chatModel } from "./dao/models/chatSchema.js";
+// ---------------------     handlebars       ----------------------------
 import handlebars from 'express-handlebars'
+// ---------------------     dirname       ----------------------------
 import __dirname from './utils.js'
+// ---------------------     server       ----------------------------
 import {Server} from 'socket.io'
+// ---------------------     mongooose       ----------------------------
 import mongoose from 'mongoose'
-import cartRemder from './routes/cart.render.js'
-import session from 'express-session'
 import MongoStore from 'connect-mongo'
-import sessionRouter from './routes/sesion.router.js'
-import userviews from './routes/users.views.router.js'
-import jwtRouter from './routes/jwt.router.js'
+// ---------------------     session       ----------------------------
+import session from 'express-session'
+// ---------------------     passport       ----------------------------
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
-import githubLogin from './routes/github.login.views.router.js'
+// ---------------------     cookie       ----------------------------
 import cookieParser from 'cookie-parser'
+
+// ---------------------     routes       ----------------------------
+import cartManager from "./routes/carts.router.js";
+import productosManager from "./routes/productos.router.js"
+import viewsProducts from "./routes/views.Prod.js"
+import chat from './routes/chat.router.js'
+import sessionRouter from './routes/sesion.router.js'
+import jwtRouter from './routes/jwt.router.js'
+import githubLogin from './routes/github.login.views.router.js'
+import cartRemder from './routes/cart.render.js'
+import userviews from './routes/users.views.router.js'
 
 
 const app = express()
@@ -68,19 +79,19 @@ app.use(passport.session());
 // ---------------------      routes principales      ----------------------------
 
 // configuro los routes
-app.use('/api/productos/', productosManager)
-app.use('/api/carts/', cartManager)
+app.use('/api/productos/', productosManager) //listo
 
-// ---------------------     otros routes       ----------------------------
+// logica de carrito, pushear productos, etc..
+app.use('/api/carts/', cartManager) //listo
 
 // renderizado de los productos cargados
-app.use('/api/prodviews', viewsProducts)
+app.use('/api/prodviews', viewsProducts) //(solo falta hacer el ejercicio de paginado trabajjdo con capas)
 
 // CHAT
 app.use('/api/chat', chat)
 
 // vista del carrito
-app.use('/api/cartviews', cartRemder)
+app.use('/api/cartviews', cartRemder) //listo
 
 // session
 app.use('/api/session', sessionRouter)

@@ -1,42 +1,27 @@
 import { Router } from "express";
+import { addProduct } from "../controllers/products.controler.js";
 // import productManager from "../service/productManager.js"
-import {ProductModel} from '../dao/models/productsSchema.js'
+// import {ProductModel} from '../dao/models/productsSchema.js'
 
 const router = Router()
-
-// mostrar productos
-
-router.get('/', async (req,res) => {
-    try {
-        let products = await ProductModel.find()
-        console.log(products);
-        res.send(products)
-    } catch (error) {
-        console.error("No se pudo obtener productos con moongose: " + error);
-        res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});
-    }
-})
-
+// configurar route para poder usarla si se es administrador solamente
 
 
 // cargar producto
-router.post('/', async (req, res) => {
-    try {
-        let {titulo, precio, stock} = req.body
-        let product = await ProductModel.create({titulo, precio, stock})
-        res.send(product)
-    } catch (error) {
-        console.error("No se pudo obtener productos con moongose: " + error);
-        res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});
-    }
-})
+router.post('/', addProduct)
 
 
-// modificar un producto
-router.put('/put', async (req, res) => {
-    
-})
 
+
+
+
+
+
+
+
+
+
+// ---------------------      fileSystem      ----------------------------
 
 //  FS
 
