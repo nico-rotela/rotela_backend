@@ -17,8 +17,8 @@ export default class cartService {
         return push
     }
 
-    crearCart = async (nombre) => {
-        let cart = await cartModel.create({nombre})
-        return cart
-    }
+    // crearCart = async (nombre) => {
+    //     let cart = await cartModel.create({nombre})
+    //     return cart
+    // }
 }

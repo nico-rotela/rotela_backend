@@ -1,6 +1,6 @@
 <div>
     <h1>Registro</h1>
-    <form id="registerForm">
+    <form action="/api/session/register" method="POST" id="registerForm">
 
         <label>Nombre</label>
         <input name="first_name">
@@ -17,8 +17,10 @@
         <label>Contraseña</label>
         <input name="password">
 
-        <input type="submit">
+         <button>registrar</button>
+       
     </form>
     <p>¿Ya tienes una cuenta? <a href="/api/users/login">Ingresa aquí</a></p>
 </div>
-<script src="/js/register.js"></script>
+
+ 

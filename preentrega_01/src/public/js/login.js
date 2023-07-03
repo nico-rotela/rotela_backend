@@ -5,7 +5,7 @@ form.addEventListener('submit',e=>{
     const data = new FormData(form);
     const obj = {};
     data.forEach((value,key)=>obj[key]=value);
-    fetch('/api/session/login',{
+    fetch('/api/jwt/login',{
         method:'POST',
         body:JSON.stringify(obj),
         headers:{
@@ -16,11 +16,10 @@ form.addEventListener('submit',e=>{
             result.json()
             .then(json=>{
                 console.log(json);
-                // localStorage.setItem('authToken', json.jwt);
                 console.log("Cookies generadas:");
                 console.log(document.cookie);
                 alert("Login realizado con exito!");
-                window.location.replace('/users');
+                window.location.replace('/api/users');
             });
         } else if (result.status === 401){
             console.log(result);

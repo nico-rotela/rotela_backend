@@ -13,6 +13,11 @@ export default class productService {
         return getProd
     }
 
+    delete = async(id)=>{
+        let prod = ProductModel.findByIdAndDelete(id)
+        return prod
+    }
     
+
 }
 

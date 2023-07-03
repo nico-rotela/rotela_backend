@@ -1,8 +1,17 @@
 <div>
-    {{#each carts}}
-    <h3>estos son los productos en el carrito</h1>
+    {{#each cart}}
+    <h1>estos son los productos en el carrito</h1>
     <p>detalles: {{this.producto}}</p>
     {{/each}}
 </div>
 
-<script src="../public/js/index.js"></script>
+<button>comprar</button>
+
+<form action="/api/carts/vaciarCarrito" method="post">
+        <button type="submit"> vaciar carrito </button>
+</form>
+
+<form action="/api/prodviews" method="GET">
+        <button type="submit"> volver a los productos </button>
+</form>
+

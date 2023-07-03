@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import userModel from '../dao/models/userSchema.js'
+import userModel from '../services/models/userSchema.js'
 import {isValidPassword} from '../utils.js';
 import { generateJWToken } from '../utils.js';
 
@@ -9,7 +9,7 @@ router.post("/login", async (req, res)=>{
    const {email, password} = req.body
    try {
     const user = await userModel.findOne({email: email});
-    console.log("Usuario encontrado para login:");
+    console.log("Usuario encontrado para login jwt:");
     console.log(user);
 
     if(!user){
@@ -26,14 +26,16 @@ router.post("/login", async (req, res)=>{
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         age: user.age,
-        role: user.role
+        role: user.role,
+        carritos: user.carritos
     }
 
     const access_token = generateJWToken(tokenUser);
+    console.log("acces_token desde el login");
     console.log(access_token);
 
 
-    // Con Cookies
+    // Con Cookies (la cookie va a guardar el token)
     res.cookie('jwtCookieToken', access_token , {
         maxAge: 60000,
         // httpOnly: false // expone la cookie

@@ -1,16 +1,22 @@
+// import { response } from "express";
 import CartService from "../services/dao/carts.dao.js";
 import { ProductModel } from "../services/models/productsSchema.js";
+// import { passportCall } from "../utils.js";
+import { cartModel } from "../services/models/cartsSchema.js";
+import mongoose from "mongoose";
 
 const cartService = new CartService
 
 
 export const getCartbyId = async(req, res) => {
     try {
-        const cid = req.params.cid
-        const carts = await cartService.getCid(cid)
-        console.log('info desde el controller');
-        console.log(JSON.stringify(carts, null, '\t'));
-        res.render('cart', {carts})
+        const cid = req.user.carritos[0]
+        console.log("id del carrito de compras");
+        console.log(cid);
+
+        let cart = await cartService.getCid(cid)
+        console.log(JSON.stringify(cart, null, '\t'));
+        res.render("cart", {cart})
     } catch (error) {
         console.error("Hubo un problema conectandose a la persistencia de los carritos.");
         res.status(500).send({ error: error });
@@ -27,28 +33,35 @@ export const getCarts = async (req, res) => {
         res.status(500).send({ error: error });
     }
 }
-
+//         boton(idddd)
 export const pushProducts = async (req, res) => {
     try {
-        const {cid, pid} = req.body
+        // obtener user
+        
+        const cid = req.user.carritos[0]
 
+        console.log("es el cid");
+        console.log(cid);
+        
+        const pid = req.body
+        console.log("es el pid");
+        console.log(pid);
+        const cart = await cartModel.findOne({'_id': new mongoose.Types.ObjectId(cid)})
         // busco el carrito y el producto con sus id's
-        const carts = await cartService.getCid(cid)
-        const product = await ProductModel.findById(pid)
+        const product = await ProductModel.findById(pid.id)
+        console.log(product);
 
-        let validarProd = carts.producto.find(prod => prod.prods == product)
+        const validation = cart.producto.find(prod => prod.prods._id == pid.id)
 
-        if(validarProd){
-            validarProd.quantity += 1
+        if(validation){
+            validation.quantity++
         }else{
-            carts.producto.push({prods: product})
+            cart.producto.push({prods: product})
         }
+        
+        const result = await cartModel.findOneAndUpdate({_id: cid}, {$set: cart}, {new: true})
 
-        let result = await cartService.pushProd(carts)
-        console.log('resultado del carrito(controller)');
-        console.log(JSON.stringify(carts, null, '\t'));
-
-        res.send(result)
+        res.send('holi')
     } catch (error) {
         console.error("No se pudo agregar producto al carrito " + error);
         res.status(500).send({error: "No se pudo agregar producto al carrito", message: error});
@@ -58,22 +71,28 @@ export const pushProducts = async (req, res) => {
 }
 
 export const vaciarCarrito = async (req, res) => {
-    const {cid} = req.body
-    let cart = await cartService.getCid(cid)
+    try {
+        const cid = req.user.carritos[0]
+        let cart = await cartService.getCid(cid)
 
-    if (cart) {
-        cart.producto = []
-        await cart.save()
-    } 
-    console.log('se vacio el carrito');
-    res.send(cart)
+        if (cart) {
+            cart.producto = []
+            await cart.save()
+            console.log('se vacio el carrito');
+        }
+        res.send('carrito vaciado')
+    } catch (error) {
+        console.error("No se pudo vaciar el carrito " + error);
+        res.status(500).send({error: "No se pudo vaciar el carrito", message: error});
+    }
 }
 
 export const crearCart = async (req, res) => {
     try {
-        let {nombre} = req.body
-        let cart = await cartService.crearCart(nombre)
-        res.send(cart)
+        const user = req.user
+        console.log("log de usuario del carrito :D ");
+        console.log(user)
+        res.send("ola")
     } catch (error) {
         console.error("No se pudo crear el carrito: " + error);
         res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});

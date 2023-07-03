@@ -3,7 +3,15 @@ import {getCartbyId} from '../controllers/carts.cotroller.js'
 
 const router = Router()
 
-router.get('/:cid', getCartbyId)
+router.get('/cartUsuario', getCartbyId)
+
+router.get('/carrito', (req, res) => {
+    res.render('')
+})
+
+
+
+
 
 // router.get('/:cid', async (req, res) => {
 //     let cid = req.params.cid

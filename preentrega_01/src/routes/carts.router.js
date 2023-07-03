@@ -1,20 +1,26 @@
-import { Router } from "express";
 // import cartManager from '../service/cartManager.js'
 // import productManager from "../service/productManager.js";
-import { cartModel } from "../services/models/cartsSchema.js";
 // import { ProductModel } from "../dao/models/productsSchema.js";
+import { Router } from "express";
+import { cartModel } from "../services/models/cartsSchema.js";
 import {getCarts, pushProducts, vaciarCarrito, crearCart} from '../controllers/carts.cotroller.js'
+import { authorization, passportCall } from "../utils.js";
+
 
 const router = Router()
 
 // crear carrito
-router.post('/', crearCart)
+router.get('/',  passportCall('jwt'), crearCart )
+    
 
 // traer todos los carritos con sus productos
-router.get('/', getCarts)
+router.get('/',
+    passportCall('jwt'), //-> Usando JWT por Cookie usando customCall
+    authorization("admin"),
+    getCarts)
 
 // agregar un producto 
-router.post('/cid/agregar/pid', pushProducts)
+router.post('/agregar', passportCall('jwt'), pushProducts)
 
 // vaciar carrito
 router.post('/vaciarCarrito', vaciarCarrito)

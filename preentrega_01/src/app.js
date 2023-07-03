@@ -1,7 +1,7 @@
 // ---------------------     express       ----------------------------
 import express  from "express";
 // ---------------------     chat Schema       ----------------------------
-import { chatModel } from "./dao/models/chatSchema.js";
+import { chatModel } from "./services/models/chatSchema.js";
 // ---------------------     handlebars       ----------------------------
 import handlebars from 'express-handlebars'
 // ---------------------     dirname       ----------------------------
@@ -12,7 +12,7 @@ import {Server} from 'socket.io'
 import mongoose from 'mongoose'
 import MongoStore from 'connect-mongo'
 // ---------------------     session       ----------------------------
-import session from 'express-session'
+import session from 'express-session' 
 // ---------------------     passport       ----------------------------
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
@@ -46,6 +46,7 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
 
+
 // ---------------------     public       ----------------------------
 
 // carpeta public
@@ -59,19 +60,21 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://nicolasrotela:nicolas@cluster0.md0jeex.mongodb.net/Ecommerce?retryWrites=true&w=majority',
         mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-        ttl: 40
+        ttl: 120000
     }) ,
+    rolling: true,
     secret: 'nicosecret',
-    resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    resave: true
 }))
+
 
 // ---------------------     cookie       ----------------------------
 
 app.use(cookieParser('nikoS3cr3tC0d3'))
 
 // ---------------------     passport       ----------------------------
-initializePassport();
+initializePassport()
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -79,10 +82,10 @@ app.use(passport.session());
 // ---------------------      routes principales      ----------------------------
 
 // configuro los routes
-app.use('/api/productos/', productosManager) //listo
+app.use('/api/productos', productosManager) //listo
 
 // logica de carrito, pushear productos, etc..
-app.use('/api/carts/', cartManager) //listo
+app.use('/api/carts', cartManager) //listo
 
 // renderizado de los productos cargados
 app.use('/api/prodviews', viewsProducts) //(solo falta hacer el ejercicio de paginado trabajjdo con capas)
@@ -94,10 +97,10 @@ app.use('/api/chat', chat)
 app.use('/api/cartviews', cartRemder) //listo
 
 // session
-app.use('/api/session', sessionRouter)
+app.use('/api/session', sessionRouter) //listo
 
 // users
-app.use('/api/users', userviews)
+app.use('/api/users', userviews) //listo
 
 // login jwt
 app.use('/api/jwt', jwtRouter)

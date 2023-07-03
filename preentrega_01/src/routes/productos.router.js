@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addProduct } from "../controllers/products.controler.js";
+import { addProduct, deleteProduct } from "../controllers/products.controler.js";
 // import productManager from "../service/productManager.js"
 // import {ProductModel} from '../dao/models/productsSchema.js'
 
@@ -9,6 +9,7 @@ const router = Router()
 
 // cargar producto
 router.post('/', addProduct)
+router.delete('/delete', deleteProduct) //hacer vista
 
 
 

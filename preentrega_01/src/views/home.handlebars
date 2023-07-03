@@ -1,23 +1,17 @@
 <div>
-    <h1>Tu perfil (sin datos sensibles)</h1>
-    <p>{{user.name}}</p>
-    <p>{{user.email}}</p>
-    <p>{{user.age}}</p>
+    <h1>usuario: {{user.name}}</h1>
+    <p>email: {{user.email}}</p>
 </div>
 
 <form action="/api/session/logout" method="GET">
         <button type="submit"> logout </button>
 </form>
 
-<div>
-   {{#each prodRender}}
-      <h2>informacion de este producto</h2>
-      <p>titulo: {{this.titulo}}</p>
-      <p>precio: {{this.precio}}</p>
-      <p>stock: {{this.stock}}</p>
-      <button id="{{this._id}}">agregar al carrito</button>
-   {{/each}}
-</div>
+<form action="/api/cartviews/cartUsuario">
+    <button type="submit"> ver carrito de compras</button>
+</form>
+
+
 
 <br/>
 
@@ -29,7 +23,10 @@
       <p>titulo: {{this.titulo}}</p>
       <p>precio: {{this.precio}}</p>
       <p>stock: {{this.stock}}</p>
-      <button id="{{this._id}}">agregar al carrito</button>
+    <form action="/api/carts/agregar" method="POST"> 
+        <input type="hidden" name="id" value="{{this._id}}">
+        <button>agregar al carrito</button>
+    </form>
     </div>
     <br/>
     {{/each}}
@@ -46,5 +43,3 @@
         <a href={{this.result.nextLink}}>Siguiente </a>
     {{/if}} 
 </div>
-
-<script>"/js/logout.js"</script>

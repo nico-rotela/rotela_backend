@@ -2,9 +2,10 @@ import passport from 'passport'
 import passportLocal from 'passport-local'
 import jwtStratergy from 'passport-jwt'
 import githubStrategy from 'passport-github2'
-import userModel from '../dao/models/userSchema.js'
+import userModel from '../services/models/userSchema.js'
 import { createHash, isValidPassword } from '../utils.js'
 import { PRIVATE_KEY } from '../utils.js'
+import { cartModel } from '../services/models/cartsSchema.js'
 
 // Declaro nuestra estrategia
 const localStrategy = passportLocal.Strategy;
@@ -59,6 +60,7 @@ const initializePassport = () => {
 
         async(req, username, password, done) =>{
             const { first_name, last_name, email, age } = req.body;
+            const carritos = await cartModel.create({nombre: "carritos", products: []})
             try {
 
                 const exists = await userModel.findOne({ email });
@@ -71,7 +73,8 @@ const initializePassport = () => {
                     last_name,
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    carritos: carritos
                 };
                 const result = await userModel.create(user);
                 //Todo sale OK
@@ -84,30 +87,29 @@ const initializePassport = () => {
     ))
 
     // estrategia login
-    passport.use('login', new localStrategy(
-        { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
-            try {
-                const user = await userModel.findOne({ email: username });
-                console.log("(desde passport) Usuario encontrado para login:");
-                console.log(user);
-                if (!user) {
-                    console.warn("User doesn't exists with username: " + username);
-                    return done(null, false);
-                }
-                if (!isValidPassword(user, password)) {
-                    console.warn("Invalid credentials for user: " + username);
-                    return done(null, false);
-                }
-                console.log('return del user', user);
-                return done(null, user);
-            } catch (error) {
-                return done(error);
-            }
-        })
-    );
+    // passport.use('login', new localStrategy(
+    //     { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
+    //         try {
+    //             const user = await userModel.findOne({ email: username });
+    //             console.log("(desde passport) Usuario encontrado para login:");
+    //             console.log(user);
+    //             if (!user) {
+    //                 console.warn("User doesn't exists with username: " + username);
+    //                 return done(null, false);
+    //             }
+    //             if (!isValidPassword(user, password)) {
+    //                 console.warn("Invalid credentials for user: " + username);
+    //                 return done(null, false);
+    //             }
+    //             console.log('return del user', user);
+    //             return done(null, user);
+    //         } catch (error) {
+    //             return done(error);
+    //         }
+    //     })
+    // );
 
-        
-    // JWT CON COOKIES
+// ---------------------     JWT CON COOKIES       ----------------------------        
 
      //Estrategia de obtener Token JWT por Cookie:
      passport.use('jwt', new JwtStrategy(
