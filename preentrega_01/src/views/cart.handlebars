@@ -5,7 +5,9 @@
     {{/each}}
 </div>
 
-<button>comprar</button>
+<form action="/api/carts/comprar" method="post">
+        <button type="submit"> comprar </button>
+</form>
 
 <form action="/api/carts/vaciarCarrito" method="post">
         <button type="submit"> vaciar carrito </button>

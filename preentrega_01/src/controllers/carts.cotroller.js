@@ -4,21 +4,25 @@ import { ProductModel } from "../services/models/productsSchema.js";
 // import { passportCall } from "../utils.js";
 import { cartModel } from "../services/models/cartsSchema.js";
 import mongoose from "mongoose";
+import ticketService from "../services/dao/ticket.dao.js";
+import TicketService from "../services/dao/ticket.dao.js";
 
 const cartService = new CartService
+const tickerService = new TicketService
 
 
 export const getCartbyId = async(req, res) => {
     try {
         const cid = req.user.carritos[0]
-        console.log("id del carrito de compras");
+
+        console.log("es el cid desde el getcartid");
         console.log(cid);
 
         let cart = await cartService.getCid(cid)
         console.log(JSON.stringify(cart, null, '\t'));
         res.render("cart", {cart})
     } catch (error) {
-        console.error("Hubo un problema conectandose a la persistencia de los carritos.");
+        console.error("Hubo un problema conectandose a la persistencia de los carritos."  + error);
         res.status(500).send({ error: error });
     }
 }
@@ -29,7 +33,7 @@ export const getCarts = async (req, res) => {
         console.log(JSON.stringify(carts, null, '\t'));
         res.send(carts)
     } catch (error) {
-        console.error("Hubo un problema conectandose a la persistencia de los carritos.");
+        console.error("Hubo un problema conectandose a la persistencia de los carritos." + error);
         res.status(500).send({ error: error });
     }
 }
@@ -87,14 +91,52 @@ export const vaciarCarrito = async (req, res) => {
     }
 }
 
-export const crearCart = async (req, res) => {
+export const terminarCompra = async(req, res) => {
     try {
-        const user = req.user
-        console.log("log de usuario del carrito :D ");
-        console.log(user)
-        res.send("ola")
+        const cid = req.user.carritos[0]
+        console.log("es el cid desde comprar");
+        console.log(cid);
+
+        // carrito (cid)
+        let cart = await cartService.getCid(cid)
+        console.log(JSON.stringify(cart.producto, null, '\t'));
+
+        // suma total de los productos en el carrito
+        const total = cart.producto.reduce((resultado , cantidad) => {
+            return (resultado + cantidad.prods.precio);
+        }, 0 )
+        console.log(total);
+        
+        // usuario del carrito
+        const usuario = req.user.email
+        console.log("este es el usuario");
+        console.log(usuario);
+        
+        const ticket = {usuario, total}
+        console.log(ticket);
+        const pusTicket = await tickerService.crearTicket(ticket)
+
+        if(pusTicket){
+            cart.producto = []
+            await cart.save()
+            console.log('se vacio el carrito');
+        }
+        res.send(pusTicket)
     } catch (error) {
-        console.error("No se pudo crear el carrito: " + error);
-        res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});
+        console.error("No se pudo realizar la compra " + error);
+        res.status(500).send({error: "No se pudo realizar la compra", message: error});
     }
 }
+
+
+// export const crearCart = async (req, res) => {
+//     try {
+//         const user = req.user
+//         console.log("log de usuario del carrito :D ");
+//         console.log(user)
+//         res.send("ola")
+//     } catch (error) {
+//         console.error("No se pudo crear el carrito: " + error);
+//         res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});
+//     }
+// }
