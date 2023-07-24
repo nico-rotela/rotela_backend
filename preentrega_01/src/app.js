@@ -82,25 +82,25 @@ app.use(passport.session());
 // ---------------------      routes principales      ----------------------------
 
 // configuro los routes
-app.use('/api/productos', productosManager) //listo
+app.use('/api/productos', productosManager) 
 
 // logica de carrito, pushear productos, etc..
-app.use('/api/carts', cartManager) //listo
+app.use('/api/carts', cartManager) 
 
 // renderizado de los productos cargados
-app.use('/api/prodviews', viewsProducts) //(solo falta hacer el ejercicio de paginado trabajjdo con capas)
+app.use('/api/prodviews', viewsProducts) 
 
 // CHAT
 app.use('/api/chat', chat)
 
 // vista del carrito
-app.use('/api/cartviews', cartRemder) //listo
+app.use('/api/cartviews', cartRemder) 
 
 // session
-app.use('/api/session', sessionRouter) //listo
+app.use('/api/session', sessionRouter) 
 
 // users
-app.use('/api/users', userviews) //listo
+app.use('/api/users', userviews) 
 
 // login jwt
 app.use('/api/jwt', jwtRouter)

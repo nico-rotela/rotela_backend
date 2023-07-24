@@ -86,29 +86,6 @@ const initializePassport = () => {
 
     ))
 
-    // estrategia login
-    // passport.use('login', new localStrategy(
-    //     { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
-    //         try {
-    //             const user = await userModel.findOne({ email: username });
-    //             console.log("(desde passport) Usuario encontrado para login:");
-    //             console.log(user);
-    //             if (!user) {
-    //                 console.warn("User doesn't exists with username: " + username);
-    //                 return done(null, false);
-    //             }
-    //             if (!isValidPassword(user, password)) {
-    //                 console.warn("Invalid credentials for user: " + username);
-    //                 return done(null, false);
-    //             }
-    //             console.log('return del user', user);
-    //             return done(null, user);
-    //         } catch (error) {
-    //             return done(error);
-    //         }
-    //     })
-    // );
-
 // ---------------------     JWT CON COOKIES       ----------------------------        
 
      //Estrategia de obtener Token JWT por Cookie:
