@@ -18,6 +18,9 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 // ---------------------     cookie       ----------------------------
 import cookieParser from 'cookie-parser'
+// ---------------------     variable den entorno       ----------------------------
+// import config from "./config/config.js";
+
 
 // ---------------------     routes       ----------------------------
 import cartManager from "./routes/carts.router.js";
@@ -29,10 +32,11 @@ import jwtRouter from './routes/jwt.router.js'
 import githubLogin from './routes/github.login.views.router.js'
 import cartRemder from './routes/cart.render.js'
 import userviews from './routes/users.views.router.js'
+import mockingProducts from './routes/mockingProducts.router.js'
 
 
 const app = express()
-const port = 8080
+const server_port = 8080
 
 // ---------------------      config json      ----------------------------
 // preparar la configuracion del servidor para recibir objetos JSON
@@ -108,13 +112,13 @@ app.use('/api/jwt', jwtRouter)
 // loogin gitHub
 app.use('/github', githubLogin)
 
+app.use('/api/mockingproducts', mockingProducts)
 // ---------------------     config server       ----------------------------
 
 // escuchando el servidor
-const httpServer = app.listen(port, () => {
-    console.log(`server corriendo en el servidor: ${port}`);
+const httpServer = app.listen(server_port, () => {
+    console.log(`server corriendo en el servidor: ${server_port}`);
 })
-
 // ---------------------     chat socket       ----------------------------
 
 
