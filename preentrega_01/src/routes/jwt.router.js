@@ -9,16 +9,14 @@ router.post("/login", async (req, res)=>{
    const {email, password} = req.body
    try {
     const user = await userModel.findOne({email: email});
-    console.log("Usuario encontrado para login jwt:");
-    console.log(user);
 
     if(!user){
-        console.warn("User doesn't exists with username: " + email);
+        req.logger.warning("el usuario no existe")
         return res.status(204).send({error: "Not found", message: "Usuario no encontrado con username: " + email}); 
     }
 
     if(!isValidPassword){
-        console.warn("Invalid credentials for user: " + email);
+        req.logger.warning("contraseña incorrecta intentelo nuevamente")
         return res.status(401).send({status:"error",error:"El usuario y la contraseña no coinciden!"}); 
     }
 
@@ -31,8 +29,6 @@ router.post("/login", async (req, res)=>{
     }
 
     const access_token = generateJWToken(tokenUser);
-    console.log("acces_token desde el login");
-    console.log(access_token);
 
 
     // Con Cookies (la cookie va a guardar el token)

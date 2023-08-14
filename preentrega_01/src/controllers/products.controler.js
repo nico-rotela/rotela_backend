@@ -9,7 +9,6 @@ const productService = new ProductService
 export const addProduct = async(req, res) => { 
         const {titulo, precio, stock} = req.body
         const prod = {titulo, precio, stock}
-        console.log(prod);
 
         if(!titulo || !precio || !stock) {
             // creo el customError
@@ -29,7 +28,7 @@ export const getProduct = async(req, res) => {
         let prodRender = await productService.getProducts()
         res.render('home', {prodRender})
     } catch (error) {
-        console.error("No se pudo obtener productos con moongose: " + error);
+        req.logger.error("No se pudo obtener productos con moongose: " + error)
         res.status(500).send({error: "No se pudo obtener productos con moongose", message: error});
     }
 }
@@ -41,7 +40,7 @@ export const deleteProduct = async (req, res) => {
 
         res.send({status: "producto eliminado"})
     } catch (error) {
-        console.log(error);
+        req.logger.error("No se pudo eliminar el producto: " + error)
     }
 
 }

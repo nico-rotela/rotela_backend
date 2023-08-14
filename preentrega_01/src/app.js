@@ -33,6 +33,8 @@ import githubLogin from './routes/github.login.views.router.js'
 import cartRemder from './routes/cart.render.js'
 import userviews from './routes/users.views.router.js'
 import mockingProducts from './routes/mockingProducts.router.js'
+// import config from "./config/config.js";
+import { addLogger } from "./config/logger.js";
 
 
 const app = express()
@@ -42,6 +44,9 @@ const server_port = 8080
 // preparar la configuracion del servidor para recibir objetos JSON
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// ---------------------      config midleware(logger)      ----------------------------
+app.use(addLogger)
 
 // ---------------------     config handlebars       ----------------------------
 
@@ -113,6 +118,17 @@ app.use('/api/jwt', jwtRouter)
 app.use('/github', githubLogin)
 
 app.use('/api/mockingproducts', mockingProducts)
+
+// pruebas de logger
+app.get('/loggerTest', (req, res) => {
+    req.logger.debug("prueba de log level debug")
+    req.logger.http("prueba de log level http")
+    req.logger.info("prueba de log level info")
+    req.logger.fatal("prueba de log level fatal")
+    req.logger.warning("prueba de log level warning")
+    req.logger.error("prueba de log level error")
+    res.send("prueba de logger!")
+})
 // ---------------------     config server       ----------------------------
 
 // escuchando el servidor

@@ -7,7 +7,7 @@ const router = Router()
 // register
 router.post("/register", passport.authenticate('register', { failureRedirect: '/api/sessions/fail-register' }),
     async (req, res) => {
-        console.log("Registrando nuevo usuario.");
+        req.logger.info("un usuario creado")
         res.status(201).send({ status: "success", message: "Usuario creado con extito." });
     });
 

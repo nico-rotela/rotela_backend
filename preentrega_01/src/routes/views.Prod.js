@@ -1,8 +1,6 @@
 import { Router } from "express";
-// import productManager from "../service/productManager.js"
 import { ProductModel } from "../services/models/productsSchema.js";
 import { getProduct} from "../controllers/products.controler.js";
-// import userModel from "../services/models/userSchema.js";
 import { authorization, passportCall } from "../utils.js";
 
 const router = Router()
@@ -43,18 +41,6 @@ router.get('/',
     })
 })
 
-
-
-// FS
-
-// // instancio la class de productos
-// const productosManager = new productManager('/jsonProductos.json')
-
-// router.get('/', async (req, res) => {
-//     let prodRender = await productosManager.getProduct()
-    
-//     res.render('home', {prodRender})
-// })
 
 
 
