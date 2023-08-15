@@ -1,0 +1,19 @@
+paths:
+  /api/carts/:
+    get:
+      summary: obtiene todos los carritos de la base de datos.
+      tags:
+        - carts
+      responses:
+        '200':
+          description: renderizado de los carritos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/scemas/cart'
+        "400":
+          description: se envio un dato no esperado.  
+        "500":
+          description: error inesperado en el servidor, no se pudo manejar el proceso.

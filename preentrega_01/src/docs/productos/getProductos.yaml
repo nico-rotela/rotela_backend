@@ -1,0 +1,25 @@
+paths:
+  /api/prodviews/:
+    get:
+      summary: obtiene todos los productos cargados en la base de datos.
+      tags: 
+        - productos
+      responses:
+        "200":
+          description: renderizando productos.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/producto'
+        "400":
+          description: se envio un dato no esperado.  
+        "500":
+          description: error inesperado en el servidor, no se pudo manejar el proceso.
+
+
+
+
+        
+        

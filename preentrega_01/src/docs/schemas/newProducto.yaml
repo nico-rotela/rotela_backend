@@ -1,0 +1,22 @@
+components:
+  requestBody:
+    newProduct:
+      type: object
+      required:
+        - titulo 
+        - precio 
+        - stock
+      properties:
+        titulo: 
+          type: string
+          description: nombre del producto
+        precio:
+          type: number 
+          description: precio del producto
+        stock: 
+          type: number
+          description: cantidad de este producto
+        example:
+          titulo: nombre de producto
+          precio: $precio
+          stock: stock producto

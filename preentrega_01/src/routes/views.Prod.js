@@ -11,7 +11,7 @@ router.get('/allproducts',
     authorization("admin"), 
 getProduct)
 
-// renderizado del post(productos)
+// renderizado del post(logica en: api/productos, productmanager)
 router.get('/addprod',
     passportCall('jwt'), //-> Usando JWT por Cookie usando customCall
     authorization("admin"),

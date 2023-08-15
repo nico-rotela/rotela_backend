@@ -18,9 +18,13 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 // ---------------------     cookie       ----------------------------
 import cookieParser from 'cookie-parser'
+
 // ---------------------     variable den entorno       ----------------------------
 // import config from "./config/config.js";
 
+// ---------------------     swagger       ----------------------------
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUIExpress from 'swagger-ui-express'
 
 // ---------------------     routes       ----------------------------
 import cartManager from "./routes/carts.router.js";
@@ -39,6 +43,24 @@ import { addLogger } from "./config/logger.js";
 
 const app = express()
 const server_port = 8080
+
+// ---------------------     swagger configuracion      ----------------------------
+const swaggerOption = {
+    definition:{
+        openapi: '3.0.1',
+        info:{
+            title: 'documentacion de Ecommerce "ArticulosGamer"',
+            description: 'documentacion con swager'
+        }
+    },
+    apis:[`../src/docs/**/*.yaml`]
+}
+
+// specs
+const specs = swaggerJSDoc(swaggerOption)
+// swagger api
+app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
+
 
 // ---------------------      config json      ----------------------------
 // preparar la configuracion del servidor para recibir objetos JSON
@@ -90,7 +112,7 @@ app.use(passport.session());
 
 // ---------------------      routes principales      ----------------------------
 
-// configuro los routes
+// fuunciones de productos: admin (agregar y borrar)
 app.use('/api/productos', productosManager) 
 
 // logica de carrito, pushear productos, etc..

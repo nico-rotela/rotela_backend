@@ -1,0 +1,15 @@
+components:
+  schemas:
+    cart:
+      type: object
+      properties:
+        _id: 
+          type: objectId
+          description: id autogenerado por mongo
+        producto: 
+          type: array
+          description: array de onjetos
+      example:
+        _id: objectId('64a33b24ed185952b13e807c')
+        producto: []
+        

@@ -1,0 +1,22 @@
+components:
+  schemas:
+    producto:
+      type: object
+      properties:
+        _id:
+          type: objectId
+          description: id autogenerado en mongo
+        titulo:
+          type: string
+          description: nombre del producto
+        precio:
+          type: number
+          description: precio del producto
+        stock:
+          type: number
+          description: stock del producto
+      example: 
+        _id: objectId('643db6885bb67264e228b29f')
+        titulo: mouse prueba
+        precio: $222
+        stock: 444

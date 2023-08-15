@@ -9,7 +9,7 @@ const router = Router()
 
 // cargar producto
 router.post('/', addProduct)
-router.delete('/delete', deleteProduct) //hacer vista
+router.delete('/delete/:id', deleteProduct) //hacer vista
 
 
 

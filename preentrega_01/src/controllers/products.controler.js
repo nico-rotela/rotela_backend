@@ -35,7 +35,7 @@ export const getProduct = async(req, res) => {
 
 export const deleteProduct = async (req, res) => {
     try {
-        let id = req.params
+        let id = req.params.id
         await productService.delete(id)
 
         res.send({status: "producto eliminado"})

@@ -5,8 +5,6 @@ import { authorization, passportCall } from "../utils.js";
 
 const router = Router()
 
-// crear carrito
-// router.get('/',  passportCall('jwt'), crearCart )
 
 // traer todos los carritos con sus productos
 router.get('/',passportCall('jwt'),authorization("admin"),getCarts)

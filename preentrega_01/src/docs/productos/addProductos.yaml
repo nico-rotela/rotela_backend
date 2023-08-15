@@ -1,0 +1,22 @@
+paths:
+  /api/productos:
+    post:
+      summary: agregar productos a la base de datos.
+      tags:
+        - productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBody/newProduct'
+      responses:
+        '201':
+         description: se creo el producto
+         content:
+          application/json:
+            $ref: '#/components/schemas/producto'
+        "400":
+          description: se envio un dato no esperado.  
+        "500":
+          description: error inesperado en el servidor, no se pudo manejar el proceso.

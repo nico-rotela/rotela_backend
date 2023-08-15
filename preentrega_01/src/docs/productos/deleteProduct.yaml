@@ -1,0 +1,17 @@
+paths:
+  /api/productos/delete/{id}:
+    delete:
+      summary: borra un objeto de la base de datos.
+      tags:
+        - productos
+      parameters:
+        - name: id
+          in: path
+          description: path parameter takes the product id
+          required: true
+          type: string
+      responses:
+        "204":
+          description: informacion no valida
+        "404":
+          description: producto no encontrado
