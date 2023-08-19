@@ -7,7 +7,7 @@ const router = Router()
 
 
 // traer todos los carritos con sus productos
-router.get('/',passportCall('jwt'),authorization("admin"),getCarts)
+router.get('/',passportCall('jwt'),authorization("admin"), getCarts)
 
 // agregar un producto 
 router.post('/agregar', passportCall('jwt'), pushProducts)

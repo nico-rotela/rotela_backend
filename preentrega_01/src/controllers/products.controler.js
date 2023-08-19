@@ -10,15 +10,8 @@ export const addProduct = async(req, res) => {
         const {titulo, precio, stock} = req.body
         const prod = {titulo, precio, stock}
 
-        if(!titulo || !precio || !stock) {
-            // creo el customError
-            CustomError.createError({
-                name: "error agregando producto",
-                cause: generateProductErrorInfo(prod),
-                message: "se genero un error al agregar un prodcuto a la base de datos",
-                code:EErrors.INVALID_TYPES_ERROR
-            })
-        }
+        if(!titulo || !precio || !stock) return res.status(400).send({ status: "error", error: "Incomplete values" });
+            
         let producto = await productService.save(prod)
         res.status(201).render('addProduct', {producto})
 }
