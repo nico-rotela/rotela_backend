@@ -17,7 +17,7 @@ const schema = ({
     role: {
         type: String,
         default: 'user',
-        enum: ['user', 'admin'],
+        enum: ['user', 'userPremiun', 'admin'],
     },
     carritos: [{
         ref: "carritos",

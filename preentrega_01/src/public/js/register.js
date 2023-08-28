@@ -16,11 +16,11 @@ form.addEventListener('submit',e=>{
         }
     }).then(result=>{
 
-        if(result.status === 201){
+        if(result.status === 200){
             result.json()
             alert("usuario creado con exito")
             window.location.replace('/api/users/login')
-
+  
         }else{
             alert("no se pudo crear el usuario")
         }

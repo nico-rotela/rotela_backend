@@ -1,0 +1,21 @@
+<div>
+    <h1>todos los usuarios registrados</h1>
+    {{#each users}}
+        <div>
+            <h2>usuario:</h2>
+            <p>nombre: {{this.first_name}}</p>
+            <p>apellido: {{this.last_name}}</p>
+            <p>email: {{this.email}}</p>
+            <p>edad: {{this.age}}</p>
+            <p>rol: {{this.role}}</p>
+            <form action="/api/session/id" method="POST">
+                <input type="hidden" name="id" value="{{this._id}}">
+                <button>cambiar rol</button>
+            </form>
+            <form action="/api/session/delete" method="POST">
+                <input type="hidden" name="id" value="{{this._id}}">
+                <button>borrar ususario</button>
+            </form>
+        </div>
+    {{/each}}
+</div>

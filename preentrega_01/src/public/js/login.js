@@ -5,25 +5,19 @@ form.addEventListener('submit',e=>{
     const data = new FormData(form);
     const obj = {};
     data.forEach((value,key)=>obj[key]=value);
-    fetch('/api/jwt/login',{
+    fetch('/api/session/login',{
         method:'POST',
         body:JSON.stringify(obj),
         headers:{
             'Content-Type':'application/json'
         }
-    }).then(result=>{
+    }).then(result =>{
         if(result.status===200){
-            result.json()
-            .then(json=>{
-                console.log(json);
-                console.log("Cookies generadas:");
-                console.log(document.cookie);
-                alert("Login realizado con exito!");
-                window.location.replace('/api/users');
-            });
-        } else if (result.status === 401){
-            console.log(result);
-            alert("Login invalido revisa tus credenciales!");
+            alert("Login realizado con exito!");
+            window.location.replace('/api/users');
+        } else if (result.status === 400){
+            alert("Login invalido revisa completar todos los campos y que sean correctos");
         }
-    })
+    }
+    )
 })

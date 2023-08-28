@@ -78,6 +78,8 @@ export const vaciarCarrito = async (req, res) => {
 
 export const terminarCompra = async(req, res) => {
     try {
+        let fecha = new Date()
+        console.log("esta es la hora", fecha);
         const cid = req.user.carritos[0]
         // carrito (cid)
         let cart = await cartService.getCid(cid)
@@ -86,12 +88,11 @@ export const terminarCompra = async(req, res) => {
         const total = cart.producto.reduce((resultado , cantidad) => {
             return (resultado + cantidad.prods.precio);
         }, 0 )
-        console.log(total);
         
         // usuario del carrito
         const usuario = req.user.email
         
-        const ticket = {usuario, total}
+        const ticket = {usuario, total, fecha}
         const pusTicket = await tickerService.crearTicket(ticket)
 
         if(pusTicket){

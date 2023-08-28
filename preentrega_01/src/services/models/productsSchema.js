@@ -23,7 +23,12 @@ const numberTypeSchemaNonUniqueRequerired = {
 const productSchema = new mongoose.Schema ({
     titulo: stringTypeSchemaNonUniqueRequired,
     precio: numberTypeSchemaNonUniqueRequerired,
-    stock: numberTypeSchemaNonUniqueRequerired
+    stock: numberTypeSchemaNonUniqueRequerired,
+    owner: String,
+    ownerRol: {
+        type: String,
+        enum: ['admin', 'userPremiun']
+    }
 })
 
 // usamos el plugins

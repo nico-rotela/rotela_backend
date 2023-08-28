@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { addProduct, deleteProduct } from "../controllers/products.controler.js";
+import { addProduct, deleteProduct, prueba } from "../controllers/products.controler.js";
+import { passportCall } from "../utils.js";
 // import productManager from "../service/productManager.js"
 // import {ProductModel} from '../dao/models/productsSchema.js'
 
@@ -8,8 +9,12 @@ const router = Router()
 
 
 // cargar producto
-router.post('/', addProduct)
-router.delete('/delete/:id', deleteProduct) //hacer vista
+router.post('/',passportCall('jwt'), addProduct)
+router.post('/delete/id', deleteProduct, (req, res)=>{
+    const user = req.user
+    res.send({user: user})
+})
+   
 
 
 

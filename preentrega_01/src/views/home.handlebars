@@ -1,7 +1,7 @@
 <div>
     <h1>usuario: {{user.name}}</h1>
-    <p>email: {{user.email}}</p>
 </div>
+
 
 <form action="/api/session/logout" method="GET">
         <button type="submit"> logout </button>
@@ -10,8 +10,6 @@
 <form action="/api/cartviews/cartUsuario">
     <button type="submit"> ver carrito de compras</button>
 </form>
-
-
 
 <br/>
 
@@ -42,4 +40,18 @@
      {{#if result.hasNextPage}}
         <a href={{this.result.nextLink}}>Siguiente </a>
     {{/if}} 
+</div>
+
+<div>
+    {{#each prodRender}}
+        <h2>informacion de este producto</h2>
+        <p>titulo: {{this.titulo}}</p>
+        <p>precio: {{this.precio}}</p>
+        <p>stock: {{this.stock}}</p>
+        <form action="/api/productos/delete/id" method="POST"> 
+        <input type="hidden" name="id" value="{{this._id}}">
+        <button>borrar producto de la base de datos</button>
+    </form>
+
+    {{/each}}
 </div>

@@ -32,12 +32,10 @@ import productosManager from "./routes/productos.router.js"
 import viewsProducts from "./routes/views.Prod.js"
 import chat from './routes/chat.router.js'
 import sessionRouter from './routes/sesion.router.js'
-import jwtRouter from './routes/jwt.router.js'
 import githubLogin from './routes/github.login.views.router.js'
 import cartRemder from './routes/cart.render.js'
 import userviews from './routes/users.views.router.js'
 import mockingProducts from './routes/mockingProducts.router.js'
-// import config from "./config/config.js";
 import { addLogger } from "./config/logger.js";
 
 
@@ -133,12 +131,11 @@ app.use('/api/session', sessionRouter)
 // users
 app.use('/api/users', userviews) 
 
-// login jwt
-app.use('/api/jwt', jwtRouter)
 
 // loogin gitHub
 app.use('/github', githubLogin)
 
+// productos mockiados
 app.use('/api/mockingproducts', mockingProducts)
 
 // pruebas de logger

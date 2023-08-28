@@ -17,3 +17,43 @@
         "prodId": 0
     }
 ]
+
+
+
+ // estrategia register
+ passport.use('register', new localStrategy(
+ // passReqToCallback: para convertirlo en un callback de request, para asi poder iteractuar con la data que viene del cliente
+ // usernameField: renombramos el username
+ { passReqToCallback: true, usernameField: 'email' },
+
+ async(req, username, password, done) =>{
+     try {
+         const { first_name, last_name, email, age, password } = req.body;
+         // creo el carrito del usuario
+         const carritos = await cartModel.create({nombre: "carritos", products: []})
+         const exists = await userModel.findOne({ email });
+         if(!first_name || !last_name || !email || !age || !password){
+             console.log("completar todos los datos por favor");
+             return done(null, false);
+         }
+         if (exists) {
+             console.log("El usuario ya existe.");
+             return done(null, false);
+         }
+         const user = {
+             first_name,
+             last_name,
+             email,
+             age,
+             password: createHash(password),
+             carritos: carritos
+         };
+         const result = await userModel.create(user);
+         //Todo sale OK
+         return done(null, result);
+     } catch (error) {
+         return done("Error registrando el usuario: " + error);
+     }
+ }
+
+))

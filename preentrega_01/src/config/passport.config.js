@@ -52,40 +52,6 @@ const initializePassport = () => {
     })
     )
 
-    // estrategia register
-    passport.use('register', new localStrategy(
-        // passReqToCallback: para convertirlo en un callback de request, para asi poder iteractuar con la data que viene del cliente
-        // usernameField: renombramos el username
-        { passReqToCallback: true, usernameField: 'email' },
-
-        async(req, username, password, done) =>{
-            const { first_name, last_name, email, age } = req.body;
-            const carritos = await cartModel.create({nombre: "carritos", products: []})
-            try {
-
-                const exists = await userModel.findOne({ email });
-                if (exists) {
-                    console.log("El usuario ya existe.");
-                    return done(null, false);
-                }
-                const user = {
-                    first_name,
-                    last_name,
-                    email,
-                    age,
-                    password: createHash(password),
-                    carritos: carritos
-                };
-                const result = await userModel.create(user);
-                //Todo sale OK
-                return done(null, result);
-            } catch (error) {
-                return done("Error registrando el usuario: " + error);
-            }
-        }
-
-    ))
-
 // ---------------------     JWT CON COOKIES       ----------------------------        
 
      //Estrategia de obtener Token JWT por Cookie:

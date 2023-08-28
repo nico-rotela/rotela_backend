@@ -3,3 +3,35 @@ fatal: prueba de log level fatal
 fatal: prueba de log level fatal
 fatal: prueba de log level fatal
 error: prueba de log level error
+error: No se pudo agregar productos: ReferenceError: user is not defined
+error: No se pudo agregar productos: ReferenceError: user is not defined
+error: No se pudo agregar productos: ReferenceError: user is not defined
+error: No se pudo agregar productos: ReferenceError: user is not defined
+error: No se pudo agregar productos: TypeError: Cannot read properties of undefined (reading 'role')
+error: No se pudo eliminar el producto: CastError: Cast to ObjectId failed for value ":id" (type string) at path "_id" for model "productos"
+error: No se pudo eliminar el producto: CastError: Cast to ObjectId failed for value ":id" (type string) at path "_id" for model "productos"
+error: No se pudo eliminar el producto: CastError: Cast to ObjectId failed for value "{ _id: ':id' }" (type Object) at path "_id" for model "productos"
+error: No se pudo eliminar el producto: CastError: Cast to ObjectId failed for value "{ _id: ':id' }" (type Object) at path "_id" for model "productos"
+error: No se pudo eliminar el producto: CastError: Cast to ObjectId failed for value "{ _id: undefined }" (type Object) at path "_id" for model "productos"
+error: No se pudo eliminar el producto: ReferenceError: user is not defined
+error: No se pudo eliminar el producto: ReferenceError: user is not defined
+error: No se pudo eliminar el producto: ReferenceError: user is not defined
+error: No se pudo eliminar el producto: TypeError: Cannot read properties of undefined (reading 'role')
+error: No se pudo eliminar el producto: TypeError: Cannot read properties of undefined (reading 'role')
+error: No se pudo eliminar el producto: TypeError: Cannot read properties of undefined (reading 'role')
+error: No se pudo eliminar el producto: TypeError: Cannot read properties of undefined (reading 'role')
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got "nico@gmail.com" (type string)
+error: No se pudo eliminar el producto: TypeError: userModel.filter is not a function
+error: No se pudo eliminar el producto: TypeError: userModel.filter is not a function
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got "nico@gmail.com" (type string)
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got "nico@gmail.com" (type string)
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got "nico@gmail.com" (type string)
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got "nico@gmail.com" (type string)
+error: No se pudo eliminar el producto: TypeError: Cannot read properties of undefined (reading 'stringify')
+error: No se pudo eliminar el producto: TypeError: Cannot read properties of undefined (reading 'stringify')
+error: No se pudo eliminar el producto: TypeError: Cannot read properties of undefined (reading 'stringify')
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got ""nico@gmail.com"" (type string)
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got "[object Object]" (type object)
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got ""nico@gmail.com"" (type object)
+error: No se pudo eliminar el producto: ObjectParameterError: Parameter "filter" to find() must be an object, got ""nico@gmail.com"" (type object)
+error: No se pudo eliminar el producto: ReferenceError: ownerId is not defined

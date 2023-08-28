@@ -6,7 +6,8 @@ const collection = "ticket";
 
 const schema = ({
     email: String,
-    total: Number
+    total: Number,
+    fecha: String
 })
 
 const ticketModel = mongoose.model(collection,schema);

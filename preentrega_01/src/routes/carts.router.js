@@ -8,16 +8,12 @@ const router = Router()
 
 // traer todos los carritos con sus productos
 router.get('/',passportCall('jwt'),authorization("admin"), getCarts)
-
 // agregar un producto 
-router.post('/agregar', passportCall('jwt'), pushProducts)
-
+router.post('/agregar', passportCall('jwt'),authorization("user") ,pushProducts)
 // vaciar carrito
 router.post('/vaciarCarrito',passportCall('jwt'), vaciarCarrito)
-
 // terminar compra de carrito
 router.post('/comprar', passportCall('jwt'), terminarCompra)
-
 // borrar un producto de un carrito
 // router.delete('/:cid/productoDelete/:pid', deleteProdInCart) falta aplicar logica de borrar
 

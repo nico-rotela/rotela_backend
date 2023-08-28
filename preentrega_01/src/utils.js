@@ -13,7 +13,6 @@ export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSy
 
 // validamos la contraseña con la que esta en la DB como hash
 export const isValidPassword = (user, password )=>{
-    console.log(`Datos a validar: user-password: ${user.password}, password: ${password}`);
     return bcrypt.compareSync(password, user.password)
 }
 
@@ -84,5 +83,13 @@ export const authorization = (role) => {
         next();
     }
 };
+
+export const restringirUser = (role) => {
+    return async (req, res, next) => {
+        if (!req.user) return res.status(401).send("Unauthorized: User not found in JWT"); 
+        if (req.user.role === role ) {return res.status(200).send("este usuario no tiene acceso a esta funcion")}
+        next()
+    }
+}
 
 export default __dirname;
